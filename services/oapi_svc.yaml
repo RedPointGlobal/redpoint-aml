@@ -1,0 +1,14 @@
+# Redis cache service
+apiVersion: v1
+kind: Service
+metadata:
+  name: oapi
+  namespace: redpoint-mercury
+  labels:
+    role: oapi
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    role: oapi

@@ -1,0 +1,47 @@
+# keycloak Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: keycloak
+    app: aml
+    version: "6.5.1"
+  name: keycloak
+  namespace: redpoint-mercury
+spec:
+  selector:
+    matchLabels:
+      role: keycloak
+      app: aml
+      version: "6.5.1"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: keycloak
+        app: aml
+        version: "6.5.1"
+    spec:
+      imagePullSecrets:
+      - name: dockerhub
+      containers:
+      - name: keycloak
+        image: docker.io/redpointglobal/keycloak:v6.5.1
+        imagePullPolicy: Always
+        ports:
+        - name: http 
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        env: 
+        - name: KEYCLOAK_USER
+          value: "sso-admin@noemail.com"
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-password
+              key: KEYCLOAK_PASSWORD
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        resources: {}
+      restartPolicy: Always

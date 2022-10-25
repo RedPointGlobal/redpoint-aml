@@ -1,0 +1,39 @@
+# dcc-socketio deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: dcc-socketio
+    app: aml
+    version: "6.5.1"
+  name: dcc-socketio
+  namespace: redpoint-mercury
+spec:
+  selector:
+    matchLabels:
+      role: dcc-socketio
+      app: aml
+      version: "6.5.1"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: dcc-socketio
+        app: aml
+        version: "6.5.1"
+    spec:
+      imagePullSecrets:
+      - name: dockerhub
+      containers:
+      - name: dcc-socketio
+        image: docker.io/redpointglobal/dcc_socketio:v6.5.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8930
+        env: 
+        - name: SOCKETIO_HOST
+          value: "0.0.0.0"
+        - name: SOCKETIO_PORT
+          value: "8930"
+        resources: {}
+      restartPolicy: Always

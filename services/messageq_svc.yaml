@@ -1,0 +1,14 @@
+# messageq service
+apiVersion: v1
+kind: Service
+metadata:
+  name: messageq
+  namespace: redpoint-mercury
+  labels:
+    role: messageq
+spec:
+  ports:
+  - port: 5672
+    protocol: TCP
+  selector:
+    role: messageq

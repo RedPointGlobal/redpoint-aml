@@ -1,0 +1,14 @@
+# predictor service
+apiVersion: v1
+kind: Service
+metadata:
+  name: predictor
+  namespace: redpoint-mercury
+  labels:
+    role: predictor
+spec:
+  ports:
+  - port: 11000
+    protocol: TCP
+  selector:
+    role: predictor

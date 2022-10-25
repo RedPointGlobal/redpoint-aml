@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dcc-ui-ingress
+  namespace: redpoint-mercury
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+    nginx.ingress.kubernetes.io/proxy-body-size: "99m"
+spec:
+  ingressClassName: mercury-prod
+  tls:
+  - secretName: mercury-tls
+  rules:
+    - host: mercury.example.com
+      http:
+        paths:
+        - path: /(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: dcc-ui
+              port:
+                number: 8980
+        - path: /admin/(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: dcc-admin-ui
+              port:
+                number: 8990

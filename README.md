@@ -58,9 +58,9 @@ kubectl create namespace redpoint-aml
  ```
 4. Create the following kubernetes secrets that MDM needs
 ```sh
-     - mongodb-conn-string      : Secret that contains the mongodb connection string
-     - docker-io                : Secret that contains your docker hub credentials
-     - aml-tls                  : Secret that contains your TLS certificate and private key to be used by the Ingress
+     - mongodb-connstring      : Secret that contains the mongodb connection string
+     - dockerhub                : Secret that contains your docker hub credentials
+     - mercury-tls                  : Secret that contains your TLS certificate and private key to be used by the Ingress
  ```
 5. Make sure you are in the repo directory that you cloned in step 1 and then run the following command to insall AML
 

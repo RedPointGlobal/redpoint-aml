@@ -1,0 +1,15 @@
+# keycloak service
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: redpoint-mercury
+  labels:
+    role: keycloak
+spec:
+  ports:
+  - port: 8040
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    role: keycloak

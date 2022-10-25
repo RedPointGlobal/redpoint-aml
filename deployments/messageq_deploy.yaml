@@ -1,0 +1,40 @@
+# messageq deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: messageq
+    app: aml
+    version: "6.5.1"
+  name: messageq
+  namespace: redpoint-mercury
+spec:
+  selector:
+    matchLabels:
+      role: messageq
+      app: aml
+      version: "6.5.1"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: messageq
+        app: aml 
+        version: "6.5.1"
+    spec:
+      containers:
+      - name: messageq
+        image: rabbitmq:3.6.10-management
+        ports:
+        - name: messageq
+          containerPort: 5672
+        env:
+        - name: RABBITMQ_DEFAULT_PASS
+          value: guest
+        - name: RABBITMQ_DEFAULT_USER
+          value: guest
+        - name: RABBITMQ_DEFAULT_VHOST
+          value: /
+        - name: RABBITMQ_ERLANG_COOKIE
+          value: "1234"
+      restartPolicy: Always

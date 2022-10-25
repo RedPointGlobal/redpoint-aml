@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: op-apis-ingress
+  namespace: redpoint-mercury 
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+    nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+#    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
+    nginx.ingress.kubernetes.io/proxy-body-size: "99m"
+spec:
+  ingressClassName: mercury-prod
+  tls:
+  - secretName: mercury-tls
+  rules:
+  - host: mercury.example.com
+    http:
+      paths:      
+      - path: /api-op/
+        pathType: Prefix
+        backend: 
+          service:
+            name: op-servicesapi
+            port:
+              number: 8950

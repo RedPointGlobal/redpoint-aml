@@ -1,0 +1,33 @@
+# OAPI Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: oapi
+    app: aml
+    version: 3.0.3
+  name: oapi
+  namespace: redpoint-mercury
+spec:
+  selector:
+    matchLabels:
+      role: oapi
+      app: aml
+      version: 3.0.3
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: oapi
+        app: aml
+        version: 3.0.3
+    spec:
+      imagePullSecrets:
+      - name: dockerhub
+      containers:
+      - name: oapi
+        image: redpointglobal/oapi:3.0.3-SNAPSHOT
+        ports:
+        - name: oapi
+          containerPort: 8080
+      restartPolicy: Always

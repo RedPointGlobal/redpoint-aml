@@ -1,0 +1,15 @@
+# dcc-socketio service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-socketio
+  namespace: redpoint-mercury
+  labels:
+    role: dcc-socketio
+spec:
+  ports:
+  - port: 8930
+    name: port8930
+    protocol: TCP
+  selector:
+    role: dcc-socketio

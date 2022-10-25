@@ -1,0 +1,14 @@
+# dcc-init service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-init
+  namespace: redpoint-mercury
+  labels:
+    role: dcc-init
+spec:
+  ports:
+  - port: 8900
+    protocol: TCP
+  selector:
+    role: dcc-init

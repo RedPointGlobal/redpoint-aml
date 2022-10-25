@@ -1,0 +1,15 @@
+# dcc-ui service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-ui
+  namespace: redpoint-mercury
+  labels:
+    role: dcc-ui
+spec:
+  ports:
+  - port: 8980
+    protocol: TCP
+  selector:
+    role: dcc-ui
+---

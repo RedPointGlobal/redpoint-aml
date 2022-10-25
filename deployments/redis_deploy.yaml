@@ -1,0 +1,31 @@
+# Redis Cache Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: cache
+    app: aml
+    version: "6.5.1"
+  name: cache
+  namespace: redpoint-mercury
+spec:
+  selector:
+    matchLabels:
+      role: cache
+      app: aml
+      version: "6.5.1"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: cache
+        app: aml
+        version: "6.5.1"
+    spec:
+      containers:
+      - name: cache
+        image: redis:3.2.8-alpine
+        ports:
+        - name: redis
+          containerPort: 6379
+      restartPolicy: Always
