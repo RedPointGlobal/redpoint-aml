@@ -18,25 +18,25 @@ In this guide, we take a Step-by-Step deployment of Redpoint Automated Machine L
 ### System Requirements
 
 - MongoDB server sizing
-    - 4 GB memory for data < 1 million records total: 
-    - 8-16 GB memory for data 1-10 million records total
+    - Version: 4.4   
+    - 8-16 GB Memory
     - SSD disks for best IO perfomance
-    - Size the MongoDB memory to keep working index set in memory for data > 10 million records total
+
+This can also be a CosmosDB account in Azure.
 
 - Kubernetes Cluster sizing
-    - nodepool with 2-3 nodes for high availabilty
-    - 8 vCPUs and 32 GB memory per node
-    - 20 GB or more free disk space per node
-
+    - Nodepool with 2-3 nodes for high availabilty
+    - 4 vCPUs and 16 GB memory per node
+    - 50 GB or more free disk space per node
+    
 ### Prerequisites
 
-Before you install MDM, you must:
+Before you install AML, you must:
 
 1. Install kubectl. ( https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/ )
-2. Install HELM. ( https://helm.sh/docs/intro/install/ )
 3. Have a Kubernetes solution available to use. ( https://kubernetes.io/docs/setup/production-environment/turnkey-solutions/ )
 4. Have an Ingress Controller solution deployed in your Kubernetes cluster (https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
-5. Have a MongoDB database server available to use for the MDM application Databases. ( https://docs.mongodb.com/v4.4/installation/). This can also be a managed solution like mongo Atlas. (As of this writing, MDM has been tested on MongoDB version 4.4)
+5. Have a MongoDB database server available to use for the AML application Databases. ( https://docs.mongodb.com/v4.4/installation/). This can also be a managed solution like mongo Atlas. (As of this writing, MDM has been tested on MongoDB version 4.4)
 6. Clone this repository ( git clone https://github.com/RedPointGlobal/rp-mdm.git ) 
 7. If you dont have a docker ID, create one at https://hub.docker.com/ and provide Redpoint Support with your account ID so they can grant you permissions to pull the MDM container images
 8. Have a license key to activate a Trial for Production License. Contact Redpoint support for an activation key
