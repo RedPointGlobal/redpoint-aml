@@ -65,9 +65,9 @@ kubectl create namespace redpoint-aml
 5. Make sure you are in the repo directory that you cloned in step 1 and then run the following command to insall AML
 
 ```sh
-    kubectl apply redpoint-mercury/namespace/
-    kubectl apply redpoint-mercury/services/
-    kubectl apply redpoint-mercury/deployments/
-    kubectl apply redpoint-mercury/ingress/
+    kubectl apply -f redpoint-mercury/namespace/
+    kubectl apply -f redpoint-mercury/services/
+    kubectl apply -f redpoint-mercury/deployments/
+    kubectl apply -f redpoint-mercury/ingress/
  ```
 It may take a few minutes for the all the AML services to start. Please wait about 10 minutes before testing.
