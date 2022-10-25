@@ -4,7 +4,7 @@ metadata:
   name: rpi-shared-pwd
   namespace: redpoint-mercury
 data:
-  RPI_SHARED_PASS: LkRDQ1NlY3JldDEh
+  RPI_SHARED_PASS: # base64 encorded password goes here
 type: Opaque
 
 ---
