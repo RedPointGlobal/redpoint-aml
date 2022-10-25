@@ -1,4 +1,4 @@
-## Redpoint Automated Machine Learning (AML): Deployment on Kubernetes
+## Redpoint Automated Machine Learning (AML) - Deployment on Kubernetes
 AML gives you the ability to use machine learning on your data without requiring data scientist-level expertise.
 
 AML is packaged as Docker Container Images. These container images are archived to Redpoint Global's private docker repository. 
