@@ -44,3 +44,29 @@ Before you install AML, you must:
 6. Clone this repository ( git clone https://github.com/RedPointGlobal/rp-mdm.git ) 
 7. If you dont have a docker ID, create one at https://hub.docker.com/ and provide Redpoint Support with your account ID so they can grant you permissions to pull the AML container images
 8. Have a license key to activate AML. Contact Redpoint support for an activation key
+
+### Install Procedure
+
+1. Clone this repository
+```sh
+git clone https://github.com/RedPointGlobal/rp-mercury.git
+ ```
+2. Connect to your Kubernetes Cluster
+3. Create a namespace for AML
+```sh
+kubectl create namespace redpoint-aml
+ ```
+4. Create the following kubernetes secrets that MDM needs
+```sh
+     - mongodb-conn-string      : Secret that contains the mongodb connection string
+     - docker-io                : Secret that contains your docker hub credentials
+     - aml-tls                  : Secret that contains your TLS certificate and private key to be used by the Ingress
+ ```
+5. Make sure you are in the repo directory that you cloned in step 1 and then run the following command to insall AML
+
+```sh
+    kubectl apply redpoint-mercury/services
+    kubectl apply redpoint-mercury/deployments
+    kubectl apply redpoint-mercury/ingress
+ ```
+It may take a few minutes for the all the AML services to start. Please wait about 10 minutes before testing.
