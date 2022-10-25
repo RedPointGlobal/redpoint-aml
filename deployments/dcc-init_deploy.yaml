@@ -1,3 +1,13 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: rpi-shared-pwd
+  namespace: redpoint-mercury
+data:
+  RPI_SHARED_PASS: LkRDQ1NlY3JldDEh
+type: Opaque
+
+---
 # dcc-init Deployment
 apiVersion: apps/v1
 kind: Deployment

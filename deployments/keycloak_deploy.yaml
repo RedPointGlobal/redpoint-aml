@@ -1,3 +1,13 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: keycloak-password
+  namespace: redpoint-mercury
+data:
+  KEYCLOAK_PASSWORD: eVBhaGVmeWx4SGFMR3dadA==
+type: Opaque
+
+---
 # keycloak Deployment
 apiVersion: apps/v1
 kind: Deployment
