@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.5.1
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
 rules:
 - apiGroups:
   - ""
@@ -105,7 +105,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.5.1
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 rules:
 - apiGroups:
@@ -211,15 +211,15 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.5.1
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
 subjects:
 - kind: ServiceAccount
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 
 ---
@@ -231,15 +231,15 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.5.1
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
 subjects:
 - kind: ServiceAccount
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 
 ---
@@ -254,7 +254,7 @@ metadata:
     app.kubernetes.io/version: 1.5.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 data:
 
@@ -286,7 +286,7 @@ metadata:
     app.kubernetes.io/version: 1.5.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 spec:
   selector:
@@ -315,10 +315,10 @@ spec:
                   - /wait-shutdown
           args:
             - /nginx-ingress-controller
-            - --publish-service={{ .Values.application.namespace }}/nginx-redpoint-aml
+            - --publish-service={{ .Values.application.namespace }}/redpoint-aml-nginx
             - --election-id=ingress-nginx-leader
             - --controller-class=k8s.io/ingress-nginx
-            - --configmap={{ .Values.application.namespace }}/nginx-redpoint-aml
+            - --configmap={{ .Values.application.namespace }}/redpoint-aml-nginx
             - --tcp-services-configmap={{ .Values.application.namespace }}/aml-tcp-services
             - --default-ssl-certificate={{ .Values.application.namespace }}/aml-tls
             - --watch-namespace={{ .Values.application.namespace }}
@@ -374,7 +374,7 @@ spec:
               memory: 90Mi
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: nginx-redpoint-aml
+      serviceAccountName: redpoint-aml-nginx
       terminationGracePeriodSeconds: 300
 
 ---
@@ -383,8 +383,8 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-rgoc-nonprod-eus2-aks"
+#    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+#    service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "snet-rgoc-nonprod-eus2-aks"
   labels:
     helm.sh/chart: ingress-nginx-4.4.0
     app.kubernetes.io/name: ingress-nginx
@@ -392,7 +392,7 @@ metadata:
     app.kubernetes.io/version: 1.5.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 spec:
   type: LoadBalancer
@@ -427,6 +427,6 @@ metadata:
     app.kubernetes.io/version: 1.5.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
-  name: nginx-redpoint-aml
+  name: redpoint-aml-nginx
   namespace: {{ .Values.application.namespace }}
 automountServiceAccountToken: true

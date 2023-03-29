@@ -142,7 +142,7 @@ spec:
   tls:
     - secretName: aml-tls
   rules:
-    - host: dccdemo-sso.redpointcloud.com
+    - host: sso-{{ .Values.ingress.host }}
       http:
         paths:
           - path: /(.*)
