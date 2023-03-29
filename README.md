@@ -110,9 +110,9 @@ You should now be able to extract the AML URL endpoints by running the commands 
 https://redpoint-aml.example.com
 
 where;
-https://redpoint-aml.example.com             # AML login UI
-https://redpoint-aml.example.com/admin/      # AML admin UI
-https://redpoint-aml.example.com/docs/       # AML swagger docs UI
+ - https://redpoint-aml.example.com             # AML login UI
+ - https://redpoint-aml.example.com/admin/      # AML admin UI
+ - https://redpoint-aml.example.com/docs/       # AML swagger docs UI
  ```  
 
 ### Install License
