@@ -91,7 +91,7 @@ metadata:
     app.kubernetes.io/version: 1.5.1
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
-  name: nginx-redpoint-aml
+  name: {{ .Values.ingress.className }}
 spec:
   controller: k8s.io/ingress-nginx
   

@@ -5,7 +5,7 @@ metadata:
   labels:
     role: trainer
     app: aml
-    version: 6.5.1
+    version: {{  .Values.images.tag }}
   name: trainer
   namespace: {{ .Values.application.namespace }}
 spec:
@@ -13,14 +13,14 @@ spec:
     matchLabels:
       role: trainer
       app: aml
-      version: 6.5.1
-  replicas: 1
+      version: {{  .Values.images.tag }}
+  replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: trainer
         app: aml
-        version: 6.5.1
+        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io

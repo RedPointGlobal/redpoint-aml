@@ -5,7 +5,7 @@ metadata:
   labels:
     role: dcc-init
     app: aml
-    version: 6.5.1
+    version: {{  .Values.images.tag }}
   name: dcc-init
   namespace: {{ .Values.application.namespace }}
 spec:
@@ -13,14 +13,14 @@ spec:
     matchLabels:
       role: dcc-init
       app: aml
-      version: 6.5.1
-  replicas: 1
+      version: {{  .Values.images.tag }}
+  replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: dcc-init
         app: aml
-        version: 6.5.1
+        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
@@ -56,11 +56,11 @@ spec:
         - name: REST_NAME
           value: 0.0.0.0
         - name: RPI_ENABLED
-          value: "true"
+          value: {{ .Values.envs.RPI_ENABLED | quote }}
         - name: RPI_READ_TIMEOUT
           value: "300000"
         - name: RPI_NAME
-          value: allinone.rphelios.net
+          value: {{ .Values.envs.RPI_NAME }}
         - name: RPI_SHARED_PASS
           valueFrom:
             secretKeyRef:
@@ -71,7 +71,7 @@ spec:
         - name: RPI_CACHES_ENABLED
           value: "false"
         - name: SMTP_HOST
-          value: <enter your smtp host here>
+          value: {{ .Values.envs.SMTP_HOST }}
         - name: IS_DCC_INIT
           value: "true"
         - name: RABBITMQ_ENABLED

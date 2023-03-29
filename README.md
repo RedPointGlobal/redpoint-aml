@@ -53,15 +53,15 @@ Before you install AML, you must:
 ```sh
 git clone https://github.com/RedPointGlobal/redpoint-aml.git
  ```
-2. Create a namespace for AML (HELM expects a namespace named redpoint-aml)
+2. Create a namespace for AML
 ```sh
 kubectl create namespace redpoint-aml
  ```
-3. Create the following kubernetes secrets that aml needs
+3. Create the following secrets that aml needs
  - ```mongo-conn-string``` | Secret that contains your mongodb connection string 
 ```
  kubectl create secret generic mongo-conn-string \
---from-literal=MONGO_CONNECTION_STRING=$your_mongo_connection_string \
+--from-literal=MONGODB_NAME=$your_mongo_connection_string \
 --namespace redpoint-aml
 ```
  - ```docker-io``` | Secret that contains your docker hub credentials 

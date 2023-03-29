@@ -14,7 +14,7 @@ spec:
       role: oapi
       app: aml
       version: 3.0.3
-  replicas: 1
+  replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:

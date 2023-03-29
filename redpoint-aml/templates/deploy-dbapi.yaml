@@ -6,7 +6,7 @@ metadata:
   labels:
     role: dbapi
     app: aml
-    version: 6.5.1
+    version: {{  .Values.images.tag }}
   name: dbapi
   namespace: {{ .Values.application.namespace }}
 spec:
@@ -14,14 +14,14 @@ spec:
     matchLabels:
       role: dbapi
       app: aml
-      version: 6.5.1
-  replicas: 1
+      version: {{  .Values.images.tag }}
+  replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: dbapi
         app: aml
-        version: 6.5.1
+        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io

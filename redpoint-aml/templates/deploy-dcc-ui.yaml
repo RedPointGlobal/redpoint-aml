@@ -5,7 +5,7 @@ metadata:
   labels:
     role: dcc-ui
     app: aml
-    version: 6.5.1
+    version: {{  .Values.images.tag }}
   name: dcc-ui
   namespace: {{ .Values.application.namespace }}
 spec:
@@ -13,14 +13,14 @@ spec:
     matchLabels:
       role: dcc-ui
       app: aml
-      version: 6.5.1
-  replicas: 1
+      version: {{  .Values.images.tag }}
+  replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: dcc-ui
         app: aml
-        version: 6.5.1
+        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io

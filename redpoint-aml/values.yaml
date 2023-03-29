@@ -9,7 +9,10 @@ images:
   tag: v6.5.1
   pullSecret: docker-io
 
+replicas: 1
+
 envs:
+  RPI_ENABLED: false 
   RPI_NAME: rpi.example.com             # FQDN on your RPI server (Optional - Only required for RPI integration) 
   RPDM_HOST: rpdm.example.com           # FQDN on your RPDM server (Optional - Only required for RPDM integration) 
   RPDM_PORT: 20420
@@ -19,15 +22,20 @@ envs:
   DATASET_CSV_DIR: /example
   ADL2_ACCOUNT_NAME: example               
   RPI_ENABLED: false
+  SITE_URL: 
   RPI_READ_TIMEOUT: 300000
   SSO_ENABLED: true
   MSGQ_TRAINER_CHANNEL: training_tasks
   TRAINING_HEALTHY_MINS: 1500
+  SMTP_HOST: smtp.example.com
+  SMTP_USER: example_smtp_user
+  SMTP_PORT: 587
+  SMTP_PASS: superStrongExamplep@sswd
 
 ingress:
-  tls_secret: tls-redpoint-aml
+  tls_secret: aml-tls
   className: redpoint-aml
-  host: demo-aml.redpointapps.com
+  host: redpoint-aml.example.com 
   nginx_version: 1.5.1
 
 securityContext:

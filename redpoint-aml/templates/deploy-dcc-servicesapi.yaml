@@ -5,7 +5,7 @@ metadata:
   labels:
     role: dcc-servicesapi
     app: aml
-    version: 6.5.1
+    version: {{  .Values.images.tag }}
   name: dcc-servicesapi
   namespace: {{ .Values.application.namespace }}
 spec:
@@ -13,14 +13,14 @@ spec:
     matchLabels:
       role: dcc-servicesapi
       app: aml
-      version: 6.5.1
-  replicas: 1
+      version: {{  .Values.images.tag }}
+  replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: dcc-servicesapi
         app: aml
-        version: 6.5.1
+        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
@@ -56,11 +56,11 @@ spec:
         - name: REST_NAME
           value: 0.0.0.0
         - name: RPI_ENABLED
-          value: "true"
+          value: {{ .Values.envs.RPI_ENABLED | quote }}
         - name: RPI_READ_TIMEOUT
           value: "300000"
         - name: RPI_NAME
-          value: "allinone.rphelios.net" 
+          value: {{ .Values.envs.RPI_NAME }}
         - name: RPI_SHARED_PASS
           valueFrom:
             secretKeyRef:
@@ -71,20 +71,17 @@ spec:
         - name: RPI_CACHES_ENABLED
           value: "false"
         - name: SMTP_HOST
-          value: email-smtp.us-east-1.amazonaws.com
+          value: {{ .Values.envs.SMTP_HOST }}
         - name: SMTP_PORT
-          value: '587'
+          value: {{ .Values.envs.SMTP_PORT | quote }}
         - name: SMTP_PROTO
           value: SMTP_TLS
         - name: SMTP_USER
-          value: AKIA4YLE5WJYQL55N7A3
+          value: {{ .Values.envs.SMTP_USER }}
         - name: SMTP_PASS
-          valueFrom:
-            secretKeyRef:
-              name: smtp-pwd
-              key: SMTP_PASS
+          value: {{ .Values.envs.SMTP_PASS }}
         - name: SITE_URL
-          value: ""
+          value: {{ .Values.envs.SITE_URL | quote }}
         - name: RABBITMQ_ENABLED
           value: "true"
         - name: RABBITMQ_NAME
@@ -114,3 +111,13 @@ spec:
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup auth-services; do echo waiting for auth-services; sleep 2; done;']
       restartPolicy: Always
+
+---
+apiVersion: v1
+data:
+  RPI_SHARED_PASS: LkRDQ1NlY3JldDEh
+kind: Secret
+metadata:
+  name: rpi-shared-pwd
+  namespace: {{ .Values.application.namespace }}
+type: Opaque
