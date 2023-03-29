@@ -1,0 +1,14 @@
+# dcc-servicesapi service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-servicesapi
+  namespace: {{ .Values.application.namespace }}
+  labels:
+    role: dcc-servicespai
+spec:
+  ports:
+  - port: 8900
+    protocol: TCP
+  selector:
+    role: dcc-servicesapi

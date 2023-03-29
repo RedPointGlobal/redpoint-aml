@@ -1,0 +1,43 @@
+# auth-services Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: auth-services
+    app: aml
+    version: 6.5.1
+  name: auth-services
+  namespace: {{ .Values.application.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: auth-services
+      app: aml
+      version: 6.5.1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: auth-services
+        app: aml
+        version: 6.5.1
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: auth-services
+        image: redpointglobal/auth_services:{{ .Values.images.tag }}
+        imagePullPolicy: Always
+        ports: 
+        - containerPort: 9090
+        - containerPort: 9901
+        - containerPort: 9903
+        - containerPort: 9908
+        env: 
+        - name: MONGO_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: mongo-conn-string
+              key: MONGODB_NAME
+        resources: {}
+      restartPolicy: Always

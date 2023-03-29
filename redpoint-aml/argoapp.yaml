@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aml-presales
+  namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.email: "jim.musana@redpointglobal.com"
+  labels:
+    app: AML
+    env: Presales
+    region: Eastus2
+spec:
+  project: rgoh-presales
+  source:
+    repoURL: https://RedPointCMP@dev.azure.com/RedPointCMP/rgOne%20DevOps/_git/rgoc-apps-helm-nonprod
+    path: rgoh-apps/client-services/redpoint-aml
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: aml-presales
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,42 @@
+application:
+  name: redpoint-aml
+  environment: prod
+  region: eastus2
+  namespace: redpoint-aml
+
+images:
+  repository: redpointglobal
+  tag: v6.5.1
+  pullSecret: docker-io
+
+envs:
+  RPI_NAME: rpi.example.com             # FQDN on your RPI server (Optional - Only required for RPI integration) 
+  RPDM_HOST: rpdm.example.com           # FQDN on your RPDM server (Optional - Only required for RPDM integration) 
+  RPDM_PORT: 20420
+  RPDM_USER: rpdm.svs                   # RPDM username
+  RPDM_PASS: "example-password" 
+  DATASET_CSV_STORAGE: ADL2
+  DATASET_CSV_DIR: /example
+  ADL2_ACCOUNT_NAME: example               
+  RPI_ENABLED: false
+  RPI_READ_TIMEOUT: 300000
+  SSO_ENABLED: true
+  MSGQ_TRAINER_CHANNEL: training_tasks
+  TRAINING_HEALTHY_MINS: 1500
+
+ingress:
+  tls_secret: tls-redpoint-aml
+  className: redpoint-aml
+  host: demo-aml.redpointapps.com
+  nginx_version: 1.5.1
+
+securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+    seccompProfile:
+      type: RuntimeDefault
+
+
+
+

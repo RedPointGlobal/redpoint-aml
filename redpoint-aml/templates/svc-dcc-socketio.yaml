@@ -1,0 +1,18 @@
+# dcc-socketio service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-socketio
+  namespace: {{ .Values.application.namespace }}
+  labels:
+    role: dcc-socketio
+  annotations:
+    nginx.org/websocket-services: "dcc-socketio"
+spec:
+  ports:
+  - port: 8930
+    name: socket
+    targetPort: 8930
+    protocol: TCP
+  selector:
+    role: dcc-socketio

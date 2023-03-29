@@ -1,0 +1,14 @@
+# dcc-admin-ui service
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-admin-ui
+  namespace: {{ .Values.application.namespace }}
+  labels:
+    role: dcc-admin-ui
+spec:
+  ports:
+  - port: 8990
+    protocol: TCP
+  selector:
+    role: dcc-admin-ui

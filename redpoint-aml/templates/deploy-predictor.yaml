@@ -1,0 +1,55 @@
+# Predictor deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: predictor
+    app: aml
+    version: 6.5.1
+  name: predictor
+  namespace: {{ .Values.application.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: predictor
+      app: aml
+      version: 6.5.1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: predictor
+        app: aml
+        version: 6.5.1
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: predictor
+        image: redpointglobal/predictor:{{ .Values.images.tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: predictor
+          containerPort: 11000
+        args:
+        - /app/predictor
+        - --rest_service=dbapi:8910
+        - --cache_host=cache
+        - --cache_port=6379
+        - --cache_channel=cache_updates
+        - --http_port=11000
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 11000
+          periodSeconds: 20
+          timeoutSeconds: 15
+          failureThreshold: 3
+      restartPolicy: Always
+      initContainers:
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      - name: init-dbapi
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup dbapi; do echo waiting for dbapi; sleep 2; done;']

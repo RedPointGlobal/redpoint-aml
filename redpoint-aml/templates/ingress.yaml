@@ -1,0 +1,182 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dcc-admin-api-ingress
+  namespace: {{ .Values.application.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
+    nginx.ingress.kubernetes.io/rewrite-target: /api/$1
+spec:
+  ingressClassName: nginx-redpoint-aml
+  tls:
+    - secretName: aml-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /admin/api/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dcc-servicesapi
+                port:
+                  number: 8900
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dcc-apis-ingress
+  namespace: {{ .Values.application.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
+    nginx.ingress.kubernetes.io/proxy-body-size: 99m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '3600'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
+spec:
+  ingressClassName: nginx-redpoint-aml
+  tls:
+    - secretName: aml-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /(api-ml/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ml-servicesapi
+                port:
+                  number: 8910
+          - path: /(api/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dcc-servicesapi
+                port:
+                  number: 8900
+          - path: /(socket.io/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dcc-socketio
+                port:
+                  number: 8930
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dcc-docs-ingress
+  namespace: {{ .Values.application.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
+    nginx.ingress.kubernetes.io/rewrite-target: /docs/$1
+spec:
+  ingressClassName: nginx-redpoint-aml
+  tls:
+    - secretName: aml-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /docs-ml/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ml-servicesapi
+                port:
+                  number: 8910
+          - path: /docs/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dcc-servicesapi
+                port:
+                  number: 8900
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dcc-ui-ingress
+  namespace: {{ .Values.application.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx-redpoint-aml
+  tls:
+    - secretName: aml-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dcc-ui
+                port:
+                  number: 8980
+          - path: /admin/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dcc-admin-ui
+                port:
+                  number: 8990
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: keycloak-ingress
+  namespace: {{ .Values.application.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
+spec:
+  ingressClassName: nginx-redpoint-aml
+  tls:
+    - secretName: aml-tls
+  rules:
+    - host: dccdemo-sso.redpointcloud.com
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8040
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: dcc-api-ml-docs-ingress
+  namespace: {{ .Values.application.namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
+    nginx.ingress.kubernetes.io/proxy-body-size: 99m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '3600'
+    nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
+    nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
+spec:
+  ingressClassName: nginx-redpoint-aml
+  tls:
+    - secretName: aml-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /api-ml/docs/
+            pathType: Prefix
+            backend:
+              service:
+                name: ml-servicesapi
+                port:
+                  number: 8910

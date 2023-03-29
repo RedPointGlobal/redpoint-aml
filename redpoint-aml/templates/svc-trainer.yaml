@@ -1,0 +1,14 @@
+# Trainer service
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainer
+  namespace: {{ .Values.application.namespace }}
+  labels:
+    role: trainer
+spec:
+  ports:
+  - port: 11001
+    protocol: TCP
+  selector:
+    role: trainer

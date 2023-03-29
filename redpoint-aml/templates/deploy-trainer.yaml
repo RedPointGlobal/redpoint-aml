@@ -1,0 +1,64 @@
+# Trainer Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: trainer
+    app: aml
+    version: 6.5.1
+  name: trainer
+  namespace: {{ .Values.application.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: trainer
+      app: aml
+      version: 6.5.1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: trainer
+        app: aml
+        version: 6.5.1
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: trainer
+        image: redpointglobal/trainer:{{ .Values.images.tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: trainer
+          containerPort: 11001
+        env:
+        - name: API_HOST
+          value: dbapi
+        - name: API_PORT
+          value: "8910"
+        - name: HTTP_PORT
+          value: "11001"
+        - name: MSGQ_TRAINER_CHANNEL
+          value: training_tasks
+        - name: MSGQ_HOST
+          value: messageq
+        - name: MSGQ_PORT
+          value: "5672"
+        livenessProbe:
+          httpGet:
+            path: /healthcheck
+            port: 11001
+          periodSeconds: 20
+          timeoutSeconds: 15
+          failureThreshold: 3
+      restartPolicy: Always
+      initContainers:
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      - name: init-messageq
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup messageq; do echo waiting for messageq; sleep 2; done;']
+      - name: init-dbapi
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup dbapi; do echo waiting for dbapi; sleep 2; done;']

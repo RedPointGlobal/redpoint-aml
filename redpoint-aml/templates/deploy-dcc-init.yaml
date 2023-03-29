@@ -1,0 +1,107 @@
+# dcc-init Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: dcc-init
+    app: aml
+    version: 6.5.1
+  name: dcc-init
+  namespace: {{ .Values.application.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: dcc-init
+      app: aml
+      version: 6.5.1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: dcc-init
+        app: aml
+        version: 6.5.1
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: dcc-init
+        image: redpointglobal/dcc_servicesapi:{{ .Values.images.tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: dcc-init
+          containerPort: 8900
+        env:
+        - name: CACHE_CHANNEL
+          value: cache_updates
+        - name: CACHE_NAME
+          value: cache
+        - name: CACHE_PORT
+          value: "6379"
+        - name: JAVA_OPTS
+          value: -Xmx8g
+        - name: MONGODB_DCC_DB
+          value: redpoint_dcc_shared
+        - name: MONGODB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-conn-string
+              key: MONGODB_NAME
+        - name: MONGODB_TYPE
+          value: MONGO 
+        - name: REST_HTTPS_PORT
+          value: "8903"
+        - name: REST_HTTP_PORT
+          value: "8900"
+        - name: REST_NAME
+          value: 0.0.0.0
+        - name: RPI_ENABLED
+          value: "true"
+        - name: RPI_READ_TIMEOUT
+          value: "300000"
+        - name: RPI_NAME
+          value: allinone.rphelios.net
+        - name: RPI_SHARED_PASS
+          valueFrom:
+            secretKeyRef:
+              name: rpi-shared-pwd
+              key: RPI_SHARED_PASS
+        - name: RPI_PORT
+          value: "443"
+        - name: RPI_CACHES_ENABLED
+          value: "false"
+        - name: SMTP_HOST
+          value: <enter your smtp host here>
+        - name: IS_DCC_INIT
+          value: "true"
+        - name: RABBITMQ_ENABLED
+          value: "true"
+        - name: RABBITMQ_NAME
+          value: "messageq"
+        - name: RABBITMQ_ML_Q
+          value: "dcc_init_queue"
+        - name: KEYCLOAK_HOST
+          value: "keycloak"
+        - name: KEYCLOAK_USER
+          value: "admin"
+        livenessProbe:
+          httpGet:
+            path: /api/v1/healthcheck
+            port: 8900
+          periodSeconds: 20
+          timeoutSeconds: 15
+          failureThreshold: 3
+        resources: {}
+      initContainers:
+      - name: init-messageq
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup messageq; do echo waiting for messageq; sleep 2; done;']
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      - name: init-auth
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup auth-services; do echo waiting for auth-services; sleep 2; done;']
+      restartPolicy: Always
+
+
