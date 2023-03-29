@@ -6,7 +6,7 @@ application:
 
 images:
   repository: redpointglobal
-  tag: v6.5.1
+  tag: v6.5.2
   pullSecret: docker-io
 
 replicas: 1
