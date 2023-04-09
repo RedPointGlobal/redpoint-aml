@@ -56,6 +56,7 @@ git clone https://github.com/RedPointGlobal/redpoint-aml.git
 2. Create a namespace for AML
 ```sh
 kubectl create namespace redpoint-aml
+
  ```
 3. Create the following secrets that aml needs
  - ```mongo-conn-string``` | Secret that contains your mongodb connection string 

@@ -2,7 +2,7 @@ application:
   name: redpoint-aml
   environment: prod
   region: eastus2
-  namespace: redpoint-aml
+  namespace: aml-training
 
 images:
   repository: redpointglobal
