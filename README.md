@@ -1,3 +1,4 @@
+![RG](https://user-images.githubusercontent.com/42842390/158004336-60f07c05-7e5d-420e-87a6-22c5ac206fb6.jpg)
 ## Redpoint Automated Machine Learning (AML) - Deployment on Kubernetes
 AML gives you the ability to use machine learning on your data without requiring data scientist-level expertise. 
 
