@@ -5,28 +5,25 @@ metadata:
   labels:
     role: auth-services
     app: aml
-    version: {{  .Values.images.tag }}
   name: auth-services
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: auth-services
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: auth-services
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
       containers:
       - name: auth-services
-        image: redpointglobal/auth_services:{{ .Values.images.tag }}
+        image: redpointglobal/auth_services_dev:v6.6.0-SNAPSHOT
         imagePullPolicy: Always
         ports: 
         - containerPort: 9090

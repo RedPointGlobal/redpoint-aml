@@ -5,22 +5,19 @@ metadata:
   labels:
     role: dcc-init
     app: aml
-    version: {{  .Values.images.tag }}
   name: dcc-init
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: dcc-init
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: dcc-init
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
@@ -41,7 +38,7 @@ spec:
         - name: JAVA_OPTS
           value: -Xmx8g
         - name: MONGODB_DCC_DB
-          value: redpoint_dcc_shared
+          value: {{ .Values.mongodb.aml_db_name }}
         - name: MONGODB_NAME
           valueFrom:
             secretKeyRef:
@@ -69,7 +66,7 @@ spec:
         - name: RPI_PORT
           value: "443"
         - name: RPI_CACHES_ENABLED
-          value: "false"
+          value: {{ .Values.envs.RPI_CACHES_ENABLED | quote }}
         - name: SMTP_HOST
           value: {{ .Values.envs.SMTP_HOST }}
         - name: IS_DCC_INIT
@@ -81,9 +78,16 @@ spec:
         - name: RABBITMQ_ML_Q
           value: "dcc_init_queue"
         - name: KEYCLOAK_HOST
-          value: "keycloak"
+          value: keycloak
+        - name: SSO_ENABLED
+          value: {{ .Values.envs.SSO_ENABLED | quote }}
         - name: KEYCLOAK_USER
-          value: "admin"
+          value: {{ .Values.keycloak.keycloak_user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: KEYCLOAK_PASSWORD
         livenessProbe:
           httpGet:
             path: /api/v1/healthcheck

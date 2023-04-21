@@ -7,7 +7,7 @@ metadata:
     app: aml
     version: {{  .Values.images.tag }}
   name: predictor
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:

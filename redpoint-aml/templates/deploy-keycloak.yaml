@@ -1,0 +1,81 @@
+# keycloak Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: keycloak
+    app: aml
+  name: keycloak
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: keycloak
+      app: aml
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: keycloak
+        app: aml
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: keycloak
+        image: redpointglobal/keycloak:{{ .Values.images.tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: http 
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        env: 
+        - name: KEYCLOAK_USER
+          value: {{ .Values.keycloak.keycloak_user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: KEYCLOAK_PASSWORD
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: DB_VENDOR
+          value: {{ .Values.keycloak.db_vendor }}
+        - name: DB_ADDR
+          value: {{ .Values.keycloak.db_address | quote }}
+        - name: DB_DATABASE
+          value: {{ .Values.keycloak.database }}
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: {{ .Values.postgresql.db_user }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql
+              key: POSTGRESQL_PASSWORD
+        - name: DB_SCHEMA
+          value: {{ .Values.postgresql.db_schema }}
+        resources: {}
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: keycloak
+spec:
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+    protocol: TCP
+  - port: 8443
+    name: https
+    targetPort: 8443
+    protocol: TCP
+  selector:
+    role: keycloak

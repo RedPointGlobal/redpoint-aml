@@ -5,22 +5,19 @@ metadata:
   labels:
     role: dcc-socketio
     app: aml
-    version: {{  .Values.images.tag }}
   name: dcc-socketio
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: dcc-socketio
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: dcc-socketio
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io

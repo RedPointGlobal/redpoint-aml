@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mercury-docs
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     role: mercury-docs
 spec:
@@ -20,22 +20,19 @@ metadata:
   labels:
     role: mercury-docs
     app: aml
-    version: {{  .Values.images.tag }}
   name: mercury-docs
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: mercury-docs
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: mercury-docs
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io

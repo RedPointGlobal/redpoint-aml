@@ -2,14 +2,14 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: dcc-admin-api-ingress
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /api/$1
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: aml-tls
+    - secretName: ingress-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -26,7 +26,7 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: dcc-apis-ingress
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/proxy-body-size: 99m
@@ -36,9 +36,9 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
     nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: aml-tls
+    - secretName: ingress-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -64,19 +64,26 @@ spec:
                 name: dcc-socketio
                 port:
                   number: 8930
+          - path: /(auth/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: dcc-docs-ingress
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /docs/$1
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: aml-tls
+    - secretName: ingress-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -101,14 +108,14 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: dcc-ui-ingress
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: aml-tls
+    - secretName: ingress-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -132,15 +139,15 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: keycloak-ingress
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: aml-tls
+    - secretName: ingress-tls
   rules:
     - host: sso-{{ .Values.ingress.host }}
       http:
@@ -158,7 +165,7 @@ kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
   name: dcc-api-ml-docs-ingress
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/proxy-body-size: 99m
@@ -166,9 +173,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
     nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
 spec:
-  ingressClassName: {{ .Values.ingress.className }}
+  ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: aml-tls
+    - secretName: ingress-tls
   rules:
     - host: {{ .Values.ingress.host }}
       http:

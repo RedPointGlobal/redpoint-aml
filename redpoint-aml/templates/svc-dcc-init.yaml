@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: dcc-init
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
   labels:
     role: dcc-init
 spec:

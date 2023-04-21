@@ -5,22 +5,19 @@ metadata:
   labels:
     role: ml-scheduler
     app: aml
-    version: {{  .Values.images.tag }}
   name: ml-scheduler
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: ml-scheduler
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: ml-scheduler
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
@@ -39,7 +36,7 @@ spec:
         - name: JAVA_OPTS
           value: -Xmx1g
         - name: MONGODB_ML_DB
-          value: redpoint_dcc_shared
+          value: {{ .Values.mongodb.aml_db_name }}
         - name: MONGODB_NAME
           valueFrom:
             secretKeyRef:
@@ -72,9 +69,16 @@ spec:
         - name: GCS_PROJECT_ID          # Project id for Google Cloud Storage
           value: ""
         - name: KEYCLOAK_HOST
-          value: "keycloak"
+          value: keycloak
+        - name: SSO_ENABLED
+          value: {{ .Values.envs.SSO_ENABLED | quote }}
         - name: KEYCLOAK_USER
-          value: "admin"
+          value: {{ .Values.keycloak.keycloak_user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: KEYCLOAK_PASSWORD
         livenessProbe:
           httpGet:
             path: /api-ml/v2/healthcheck

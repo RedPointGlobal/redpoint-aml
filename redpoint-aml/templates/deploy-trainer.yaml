@@ -7,7 +7,7 @@ metadata:
     app: aml
     version: {{  .Values.images.tag }}
   name: trainer
-  namespace: {{ .Values.application.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:

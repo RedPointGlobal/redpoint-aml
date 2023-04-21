@@ -1,18 +1,48 @@
+global:
+  namespace: redpoint-aml
+  cloudProvider: azure # or google or amazon 
+  ingress:
+    subnet_name: snet-rgoc-nonprod-eus2-aks # Replace with your virtual network subnet if cloudprovider is azure
+    internal: true
+  replicaCount: 1
+
 application:
   name: redpoint-aml
-  environment: prod
+  environment: dev
   region: eastus2
-  namespace: redpoint-aml
 
 images:
   repository: redpointglobal
   tag: v6.5.2
   pullSecret: docker-io
 
+mongodb:
+  enabled: false
+  connection_string: mongodb+srv://admin:pAGVCrprhR1saCyX@redpoint-aml.oht1frq.mongodb.net/?retryWrites=true&w=majority
+  aml_db_name: redpoint_aml
+
+keycloak:
+  enabled: true
+  keycloak_user: sso-admin@noemail.com
+  keycloak_password: 7rU8w9o8ocTa8Zp1
+  db_vendor: postgres
+  db_address: postgresql
+  database: keycloak
+
+postgresql:
+  enabled: true
+  db_user: keycloak
+  db_schema: public
+  db_password: 7rU8w9o8ocTa8Zp1
+
+nginx:
+  enabled: true
+
 replicas: 1
 
 envs:
   RPI_ENABLED: false 
+  RPI_CACHES_ENABLED: true
   RPI_NAME: rpi.example.com             # FQDN on your RPI server (Optional - Only required for RPI integration) 
   RPDM_HOST: rpdm.example.com           # FQDN on your RPDM server (Optional - Only required for RPDM integration) 
   RPDM_PORT: 20420
@@ -21,7 +51,6 @@ envs:
   DATASET_CSV_STORAGE: ADL2
   DATASET_CSV_DIR: /example
   ADL2_ACCOUNT_NAME: example               
-  RPI_ENABLED: false
   SITE_URL: 
   RPI_READ_TIMEOUT: 300000
   SSO_ENABLED: true
@@ -33,10 +62,7 @@ envs:
   SMTP_PASS: superStrongExamplep@sswd
 
 ingress:
-  tls_secret: aml-tls
-  className: redpoint-aml
-  host: redpoint-aml.example.com 
-  nginx_version: 1.5.1
+  host: redpoint-aml.example.com
 
 securityContext:
     runAsUser: 1000
