@@ -114,11 +114,6 @@ TEST SUITE: None
 It may take a few minutes for the all the AML services to start. Please wait about 5-10 minutes before proceeding to retrieve the ingress endpoints in the next step.
 
 ### AML Endpoints
-The default installation includes an Nginx ingress controller that exposes the relevant AML endpoints based on the domain specified in the ingress section within the ```values.yaml```domain. 
-```
-ingress:
-  host: redpoint-aml.example.com  # Replace example.com with your custom domain
-```
 Run the command below to retrieve the AML endpoints. 
 ```
 NAMESPACE="redpoint-aml"; INGRESS_IP=""; while true; do INGRESS_IP=$(kubectl get ingress --namespace $NAMESPACE -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"); if [ -n "$INGRESS_IP" ]; then echo "IP address found: $INGRESS_IP"; kubectl get ingress --namespace $NAMESPACE; break; else echo "No IP address found, waiting for 10 seconds before checking again..."; sleep 10; fi; done
