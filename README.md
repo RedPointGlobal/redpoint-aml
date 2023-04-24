@@ -19,7 +19,7 @@ The diagram below shows the deployment architecture
 
 ### System Requirements
 
-- MongoDB Database for AML system databases
+- MongoDB server for system databases
     - Version 5 or later
     - 16 GB Memory or more
     - 100 GB or more free disk space.
@@ -29,13 +29,13 @@ The diagram below shows the deployment architecture
        - MongoDB on Linux
        - MongoDB Atlas
 
-- PostgreSQL Database for AML Auth service (Keycloak)
+- PostgreSQL server for Keycloak 
     - Version 12 or later
     - 2 GB Memory or more
 
 - Kubernetes Cluster
     - Latest stable version of Kubernetes
-    - Nodepool with 2-3 nodes for high availabilty
+    - Nodepool with 2 or more nodes for high availabilty
     - 8 vCPUs and 16 GB memory per node
     - 100 GB or more free disk space per node
     - The Kubernetes cluster can be any of the following
@@ -49,15 +49,13 @@ Before you install AML, you must:
 1. Have a Kubernetes solution available to use. ( https://kubernetes.io/docs/setup/production-environment/turnkey-solutions/ )
 2. Install kubectl. ( https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/ )
 3. Have a MongoDB server available to use for AML system databases
-4. Have a PostgreSQL server available to use for AML Auth databases (Keycloak)
+4. Have a PostgreSQL server available to use for Keycloak
 5. Docker ID, create one at https://hub.docker.com/ and provide the account ID to Redpoint Support so they can grant you permissions to pull the AML container images
-5. Have a license key to activate AML. Contact Redpoint support for an activation key
+5. Have a License key to activate AML. Contact Redpoint support for an activation key
 
 | **NOTE:** Before you Begin!           |
 |---------------------------------------|
-| This guide focuses on Microsoft Azure for the underlying Kubernetes infrastructure, and creates Kubernetes deployments for MongoDB and PostgreSQL. This is only intended for use in a ```DEMO``` or ```DEV``` setting. 
-
-To make this production ready, you need to plug into your production MongoDB and PostgreSQL database servers. Be sure to check out the ```Customize for Production``` section down below  |
+| This guide assumes Microsoft Azure is the underlying platform for your Kubernetes infrastructure. However AML can also be deployed on clusters within the Amazon and Google Cloud platforms. Before installing AML, set the target Cloud platform in the ```values.yaml``` file as shown below
 
 ### Install Procedure
 
@@ -69,19 +67,34 @@ git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
 cd redpoint-aml
 ```
-3. Create the kubernetes secret that contains your docker hub credentials 
+3. Set your target cloud platform by updating the section below in the ```values.yaml``` file.
+```
+global:
+  cloudProvider: azure # or google or amazon   
+```
+4. Create a kubernetes secret that contains your docker hub credentials. This will be used to pull images from the Redpoint private container registry.
 ```
 kubectl create secret docker-registry docker-io --docker-server='https://index.docker.io/v1/' \
 --docker-username=$your_docker_username --docker-password=$your_docker_password \
 --namespace redpoint-aml
 ```
-4. Create the kubernetes secret that contains the certificate files for your custom domain. This is used by the default nginx ingress controller to terminate TLS for your custom domain. If this secret is not created, you will get a ```502 Bad Gateway``` when you try to access the AML Web UI
+5. Edit the ```values.yaml``` and Provide the connection strings for your MongoDB and PostgreSQL servers
+```
+mongodb:
+  connection_string: # <your mongodb connection string>
+
+postgresql:
+  host: postgresql   # <your postgresql server name>
+  db_user: keycloak  # <your postgresql admin user>
+  db_password:       # <your postgresql admin password>
+```
+5. The default installation creates an nginx ingress controller to expose the AML Web UI endpoints. To terminate TLS, provide a TLS certificate for your custom domain by creating the kubernetes secret containing your certificate data
 ```
 kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-aml
 ```
-If you prefer to use a different Ingress solution, disable the default ingress as described here [AML Ingress ](#aml-ingress) 
+If you prefer to use a different Ingress solution, you can disable the default ingress creation as described here [AML Ingress ](#aml-ingress) 
 
-5. Run the following command to install AML
+6. Run the following command to install AML
 ```
 helm install redpoint-aml redpoint-aml/ --values values.yaml --create-namespace
  ```
@@ -101,7 +114,7 @@ It may take a few minutes for the all the AML services to start. Please wait abo
 The default installation includes an Nginx ingress controller that exposes the relevant AML endpoints based on the domain specified in the ingress section within the ```values.yaml```domain. 
 ```
 ingress:
-  host: redpoint-aml.example.com
+  host: redpoint-aml.example.com  # Replace example.com with your custom domain
 ```
 Run the command below to retrieve the AML endpoints. 
 ```
@@ -137,6 +150,7 @@ envs:
   RPI_CACHES_ENABLED: false     # Change this to true
   RPI_NAME: rpi.example.com     # Replace with the FQDN of your RPI server
 ```
+
 ### AML Documentation
 For detailed AML documentation and release notes, please visit the official AML documentation website at the address below
 

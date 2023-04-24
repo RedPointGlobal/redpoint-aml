@@ -1,5 +1,5 @@
 global:
-  namespace: redpoint-aml
+  namespace: aml-temp-redpoint #redpoint-aml
   cloudProvider: azure # or google or amazon 
   ingress:
     subnet_name: snet-rgoc-nonprod-eus2-aks # Replace with your virtual network subnet if cloudprovider is azure
@@ -17,7 +17,7 @@ images:
   pullSecret: docker-io
 
 mongodb:
-  enabled: false
+  enabled: true
   connection_string: mongodb+srv://admin:pAGVCrprhR1saCyX@redpoint-aml.oht1frq.mongodb.net/?retryWrites=true&w=majority
   aml_db_name: redpoint_aml
 
@@ -33,6 +33,7 @@ postgresql:
   enabled: true
   db_user: keycloak
   db_schema: public
+  host: postgresql
   db_password: 7rU8w9o8ocTa8Zp1
 
 nginx:
