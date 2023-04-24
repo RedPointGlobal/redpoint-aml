@@ -56,7 +56,7 @@ spec:
               name: postgresql
               key: POSTGRESQL_PASSWORD
         - name: DB_SCHEMA
-          value: {{ .Values.postgresql.db_schema }}
+          value: public
         resources: {}
       restartPolicy: Always
 ---

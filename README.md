@@ -83,10 +83,11 @@ kubectl create secret docker-registry docker-io --docker-server='https://index.d
 mongodb:
   connection_string: # <your mongodb connection string>
 
-postgresql:
-  host: postgresql   # <your postgresql server name>
-  db_user: keycloak  # <your postgresql admin user>
-  db_password:       # <your postgresql admin password>
+keycloak:
+  postgresql:
+    db_address: postgresql          # Your Postgresql server address
+    db_user: keycloak               # Your Postgresql server admin user
+    db_password: 7rU8w9o8ocTa8Zp1   # Your Postgresql server admin password
 ```
 5. The default installation creates an nginx ingress controller to expose the AML Web UI endpoints. To terminate TLS, provide a TLS certificate for your custom domain by creating the kubernetes secret containing your certificate data
 ```
