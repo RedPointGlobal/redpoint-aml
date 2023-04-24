@@ -18,7 +18,7 @@ images:
 
 mongodb:
   enabled: true
-  connection_string: mongodb+srv://admin:pAGVCrprhR1saCyX@redpoint-aml.oht1frq.mongodb.net/?retryWrites=true&w=majority
+  connection_string: mongodb+srv://<username>:<password>@<mongo server address>/?retryWrites=true&w=majority
   aml_db_name: redpoint_aml
 
 keycloak:
