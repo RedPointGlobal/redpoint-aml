@@ -41,15 +41,15 @@ spec:
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
         - name: DB_VENDOR
-          value: {{ .Values.keycloak.db_vendor }}
+          value: postgres
         - name: DB_ADDR
-          value: {{ .Values.keycloak.db_address | quote }}
+          value: {{ .Values.keycloak.postgresql.db_address | quote }}
         - name: DB_DATABASE
-          value: {{ .Values.keycloak.database }}
+          value: keycloak
         - name: DB_PORT
           value: "5432"
         - name: DB_USER
-          value: {{ .Values.postgresql.db_user }}
+          value: {{ .Values.keycloak.postgresql.db_user }}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:

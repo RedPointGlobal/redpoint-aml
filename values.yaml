@@ -22,19 +22,12 @@ mongodb:
   aml_db_name: redpoint_aml
 
 keycloak:
-  enabled: true
   keycloak_user: sso-admin@noemail.com
   keycloak_password: 7rU8w9o8ocTa8Zp1
-  db_vendor: postgres
-  db_address: postgresql
-  database: keycloak
-
-postgresql:
-  enabled: true
-  db_user: keycloak
-  db_schema: public
-  host: postgresql
-  db_password: 7rU8w9o8ocTa8Zp1
+  postgresql:
+    enabled: true
+    db_address: postgresql
+    db_user: keycloak
 
 nginx:
   enabled: true
