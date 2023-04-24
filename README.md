@@ -92,8 +92,11 @@ postgresql:
 ```
 kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-aml
 ```
-If you prefer to use a different Ingress solution, you can disable the default ingress creation as described here [AML Ingress ](#aml-ingress) 
-
+If you prefer to use a different Ingress solution, you can disable the default ingress creation in the ```values.yaml``` file as shown below
+```
+nginx:
+  enabled: true # Change this to False to disable Nginx
+```
 6. Run the following command to install AML
 ```
 helm install redpoint-aml redpoint-aml/ --values values.yaml --create-namespace
