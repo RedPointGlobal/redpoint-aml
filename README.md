@@ -78,7 +78,7 @@ kubectl create secret docker-registry docker-io --docker-server='https://index.d
 --docker-username=$your_docker_username --docker-password=$your_docker_password \
 --namespace redpoint-aml
 ```
-5. Edit the ```values.yaml``` and Provide the connection strings for your MongoDB and PostgreSQL servers
+5. Provide connection strings for your MongoDB and PostgreSQL servers in the ```values.yaml``` file
 ```
 mongodb:
   connection_string: # <your mongodb connection string>
