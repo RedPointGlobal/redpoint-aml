@@ -117,18 +117,23 @@ It may take a few minutes for the all the AML services to start. Please wait abo
 ### AML Endpoints
 Run the command below to retrieve the AML endpoints. 
 ```
-NAMESPACE="redpoint-aml"; INGRESS_IP=""; while true; do INGRESS_IP=$(kubectl get ingress --namespace $NAMESPACE -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"); if [ -n "$INGRESS_IP" ]; then echo "IP address found: $INGRESS_IP"; kubectl get ingress --namespace $NAMESPACE; break; else echo "No IP address found, waiting for 10 seconds before checking again..."; sleep 10; fi; done
+kubectl get ingress --namespace redpoint-aml
 ```
-This command will keep checking the ingress IP address every 10 seconds until it finds one. Once an IP address is found, it will display the IP and the corresponding ingress hostname as shown below;
+If you dont see an IP address, it because it takes a couple minutes for the ingress load balancer to be created. Wait a few minutes and run the command once more and you should eventually see an IP address returned as shown in the example below
 
 ```
-redpoint-aml.example.com
+dcc-admin-api-ingress     nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
+dcc-api-ml-docs-ingress   nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
+dcc-apis-ingress          nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
+dcc-docs-ingress          nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
+dcc-ui-ingress            nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
 ```
 Next you need to create the corresponding DNS record in your DNS zone 
 
 At this point, the default installation is complete. You can now access the AML User login and Swagger endpoints as described below
 ```
 https://redpoint-aml.example.com              # Web UI and User login
+https://redpoint-aml.example.com/auth/        # Keycloak Web UI
 https://redpoint-aml.example.com/admin/       # Activation and Admin Setup page
 https://redpoint-aml.example.com/docs/        # Swagger Authentication and RPI Services API docs
 https://redpoint-aml.example.com/docs-ml/     # Swagger AML API docs
