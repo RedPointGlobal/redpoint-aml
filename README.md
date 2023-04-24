@@ -141,7 +141,7 @@ Default password: .RedPoint123
 ![image](https://user-images.githubusercontent.com/42842390/218563945-94a5b162-dc59-45ae-900e-130a84810f66.png)
 
 ### RPI Integration
-To configure AML integration with Redpoint Interaction (RPI), you need to provide the FQDN of the RPI server. This can be done by updating the section below in the ```values.yaml``` file. Ensure the AML deployment has network and firewall connectivity with the RPI server on port 443
+To configure AML integration with Redpoint Interaction (RPI), you need to provide the FQDN of the RPI server. This can be done by updating the section below in the ```values.yaml``` file. Before enabling RPI integration, the integration API setup must be completed in RPI. Ensure the AML deployment has network and firewall connectivity with the RPI server on port 443
 ```
 envs:
   RPI_ENABLED: false            # Change this to true
