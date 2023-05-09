@@ -5,6 +5,7 @@ global:
     subnet_name: snet-rgoc-nonprod-eus2-aks # Replace with your virtual network subnet if cloudprovider is azure
     internal: true
   replicaCount: 1
+  auth_services: keycloak # or keycloak or mdm
 
 application:
   name: redpoint-aml

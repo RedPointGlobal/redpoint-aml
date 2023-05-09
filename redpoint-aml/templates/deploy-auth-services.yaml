@@ -1,4 +1,5 @@
 # auth-services Deployment
+{{- if eq .Values.global.auth_services "mdm" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,3 +39,4 @@ spec:
               key: MONGODB_NAME
         resources: {}
       restartPolicy: Always
+{{- end }}
