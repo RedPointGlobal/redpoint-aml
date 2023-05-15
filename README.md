@@ -58,7 +58,7 @@ Before you install AML, you must:
 | This guide assumes Microsoft Azure is the underlying platform for your Kubernetes infrastructure. However AML can also be deployed on clusters within the Amazon and Google Cloud platforms. Before installing AML, set the target Cloud platform in the ```values.yaml``` file as shown below
 
 ### Install Procedure
-The default installation creates a kubernetes deployments for MongoDB and PostgreSQL. This is fine for a DEMO environment. However, for production workloads, you must disable these and instead provide connection strings for your production servers as shown in ```STEP 4```
+The default installation creates kubernetes deployments for MongoDB and PostgreSQL. This is fine for a DEMO environment. However, for production workloads, you must disable these and instead provide connection strings for your production servers as shown in ```STEP 4```
 
 1. Clone the redpoint AML repository
 ```
