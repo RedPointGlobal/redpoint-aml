@@ -46,7 +46,7 @@ spec:
         - name: DB_ADDR
           value: {{ .Values.keycloak.postgresql.db_address | quote }}
         - name: DB_DATABASE
-          value: keycloak
+          value: {{ .Values.keycloak.postgresql.db_name | quote }}
         - name: DB_PORT
           value: "5432"
         - name: DB_USER

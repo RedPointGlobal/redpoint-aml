@@ -59,30 +59,17 @@ Before you install AML, you must:
 
 ### Install Procedure
 
-1. Clone this repository
-```
-git clone https://github.com/RedPointGlobal/redpoint-aml.git
-```
-2. Connect to your Kubernetes cluster and create a namespace for AML
+1. Connect to your Kubernetes cluster and create a namespace for AML
 ```
 kubectl create namespace redpoint-aml
 ```
-3. Make sure you are inside the ```redpoint-aml``` directory 
-```
-cd redpoint-aml
-```
-4. Set your target cloud platform by updating the section below in the ```values.yaml``` file.
-```
-global:
-  cloudProvider: azure # or google or amazon   
-```
-5. Create a kubernetes secret that contains your docker hub credentials. This will be used to pull images from the Redpoint private container registry.
+2. Create a kubernetes secret that contains your docker hub credentials.
 ```
 kubectl create secret docker-registry docker-io --docker-server='https://index.docker.io/v1/' \
 --docker-username=$your_docker_username --docker-password=$your_docker_password \
 --namespace redpoint-aml
 ```
-6. Provide connection strings for your MongoDB and PostgreSQL servers in the ```values.yaml``` file
+3. Provide connection strings for your MongoDB and PostgreSQL servers in the ```values.yaml``` file
 ```
 mongodb:
   connection_string: # <your mongodb connection string>
@@ -93,16 +80,20 @@ keycloak:
     db_user: keycloak               # Your Postgresql server admin user
     db_password: 7rU8w9o8ocTa8Zp1   # Your Postgresql server admin password
 ```
-5. The default installation creates an nginx ingress controller to expose the AML Web UI endpoints. To terminate TLS, provide a TLS certificate for your custom domain by creating the kubernetes secret containing your certificate data
+4. Clone the redpoint AML repository
 ```
-kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-aml
+git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
-If you prefer to use a different Ingress solution, you can disable the default ingress creation in the ```values.yaml``` file as shown below
+5. Make sure you are inside the ```redpoint-aml``` directory 
 ```
-nginx:
-  enabled: true # Change this to False to disable Nginx
+cd redpoint-aml
 ```
-6. Run the following command to install AML
+6. Edit the ```values.yaml``` file and set your target cloud platform as shown below
+```
+global:
+  cloudProvider: azure # or google or amazon   
+```
+7. Run the following command to install AML
 ```
 helm install redpoint-aml redpoint-aml/ --values values.yaml --create-namespace
  ```
@@ -117,6 +108,17 @@ REVISION: 2
 TEST SUITE: None
 ```
 It takes a few minutes for the all the AML services to start. Please wait about 5-10 minutes before proceeding to retrieve the ingress endpoints in the next step.
+
+### AML Ingress
+8. The default installation creates an nginx ingress controller to expose the AML Web UI endpoints. To terminate TLS, provide a TLS certificate for your custom domain by creating the kubernetes secret containing your certificate data
+```
+kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-aml
+```
+If you prefer to use a different Ingress solution, you can disable the default ingress creation in the ```values.yaml``` file as shown below
+```
+nginx:
+  enabled: true # Change this to False to disable Nginx
+```
 
 ### AML Endpoints
 Run the command below to retrieve the AML endpoints. 

@@ -26,8 +26,9 @@ keycloak:
   keycloak_user: sso-admin@noemail.com
   keycloak_password: 7rU8w9o8ocTa8Zp1
   postgresql:
-    enabled: true
+    enabled: false
     db_address: postgresql
+    db_name: deletemetest
     db_user: keycloak
     db_password: 7rU8w9o8ocTa8Zp1
 
