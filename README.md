@@ -58,18 +58,21 @@ Before you install AML, you must:
 | This guide assumes Microsoft Azure is the underlying platform for your Kubernetes infrastructure. However AML can also be deployed on clusters within the Amazon and Google Cloud platforms. Before installing AML, set the target Cloud platform in the ```values.yaml``` file as shown below
 
 ### Install Procedure
-
-1. Connect to your Kubernetes cluster and create a namespace for AML
+1. Clone the redpoint AML repository
+```
+git clone https://github.com/RedPointGlobal/redpoint-aml.git
+```
+2. Connect to your Kubernetes cluster and create a namespace for AML
 ```
 kubectl create namespace redpoint-aml
 ```
-2. Create a kubernetes secret that contains your docker hub credentials.
+3. Create a kubernetes secret that contains your docker hub credentials.
 ```
 kubectl create secret docker-registry docker-io --docker-server='https://index.docker.io/v1/' \
 --docker-username=$your_docker_username --docker-password=$your_docker_password \
 --namespace redpoint-aml
 ```
-3. Provide connection strings for your MongoDB and PostgreSQL servers in the ```values.yaml``` file
+4. Edit the ```values.yaml``` file and provide connection strings for your MongoDB and PostgreSQL servers as shown below
 ```
 mongodb:
   connection_string: # <your mongodb connection string>
@@ -80,18 +83,14 @@ keycloak:
     db_user: keycloak               # Your Postgresql server admin user
     db_password: 7rU8w9o8ocTa8Zp1   # Your Postgresql server admin password
 ```
-4. Clone the redpoint AML repository
-```
-git clone https://github.com/RedPointGlobal/redpoint-aml.git
-```
-5. Make sure you are inside the ```redpoint-aml``` directory 
-```
-cd redpoint-aml
-```
-6. Edit the ```values.yaml``` file and set your target cloud platform as shown below
+5. Edit the ```values.yaml``` file and set your target cloud platform as shown below
 ```
 global:
   cloudProvider: azure # or google or amazon   
+```
+6. Make sure you are inside the ```redpoint-aml``` directory 
+```
+cd redpoint-aml
 ```
 7. Run the following command to install AML
 ```
