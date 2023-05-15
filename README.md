@@ -63,22 +63,26 @@ Before you install AML, you must:
 ```
 git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
-2. Make sure you are inside the ```redpoint-aml``` directory 
+2. Connect to your Kubernetes cluster and create a namespace for AML
+```
+kubectl create namespace redpoint-aml
+```
+3. Make sure you are inside the ```redpoint-aml``` directory 
 ```
 cd redpoint-aml
 ```
-3. Set your target cloud platform by updating the section below in the ```values.yaml``` file.
+4. Set your target cloud platform by updating the section below in the ```values.yaml``` file.
 ```
 global:
   cloudProvider: azure # or google or amazon   
 ```
-4. Create a kubernetes secret that contains your docker hub credentials. This will be used to pull images from the Redpoint private container registry.
+5. Create a kubernetes secret that contains your docker hub credentials. This will be used to pull images from the Redpoint private container registry.
 ```
 kubectl create secret docker-registry docker-io --docker-server='https://index.docker.io/v1/' \
 --docker-username=$your_docker_username --docker-password=$your_docker_password \
 --namespace redpoint-aml
 ```
-5. Provide connection strings for your MongoDB and PostgreSQL servers in the ```values.yaml``` file
+6. Provide connection strings for your MongoDB and PostgreSQL servers in the ```values.yaml``` file
 ```
 mongodb:
   connection_string: # <your mongodb connection string>
@@ -112,7 +116,7 @@ STATUS: deployed
 REVISION: 2
 TEST SUITE: None
 ```
-It may take a few minutes for the all the AML services to start. Please wait about 5-10 minutes before proceeding to retrieve the ingress endpoints in the next step.
+It takes a few minutes for the all the AML services to start. Please wait about 5-10 minutes before proceeding to retrieve the ingress endpoints in the next step.
 
 ### AML Endpoints
 Run the command below to retrieve the AML endpoints. 

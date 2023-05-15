@@ -24,7 +24,7 @@ spec:
       - name: docker-io
       containers:
       - name: auth-services
-        image: redpointglobal/auth_services_dev:v6.6.0-SNAPSHOT
+        image: redpointglobal/auth_services:{{ .Values.images.tag }}
         imagePullPolicy: Always
         ports: 
         - containerPort: 9090

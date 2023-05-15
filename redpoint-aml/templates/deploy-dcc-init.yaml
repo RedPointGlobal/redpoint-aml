@@ -21,6 +21,14 @@ spec:
     spec:
       imagePullSecrets:
       - name: docker-io
+      {{- if eq .Values.global.auth_services "keycloak" }}
+      initContainers:
+      - name: wait-for-keycloak
+        image: bitnami/kubectl
+        command: ['sh', '-c', 'until kubectl logs -n {{ .Values.global.namespace }} $(kubectl get pods -n redpoint-aml -l app=keycloak -o jsonpath="{.items[0].metadata.name}") | grep "Admin console listening on http://127.0.0.1:9990"; do echo "Waiting for Keycloak"; sleep 5; done;']
+        securityContext:
+          runAsUser: 0
+      {{- end }}
       containers:
       - name: dcc-init
         image: redpointglobal/dcc_servicesapi:{{ .Values.images.tag }}

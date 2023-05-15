@@ -21,7 +21,7 @@ spec:
       - name: docker-io
       containers:
       - name: dbapi
-        image: redpointglobal/ml_servicesapi:{{ .Values.images.tag }}
+        image: redpointglobal/dcc_servicesapi:{{ .Values.images.tag }}
         imagePullPolicy: Always
         ports:
         - name: dbapi
@@ -35,7 +35,7 @@ spec:
             value: "6379"
           - name: JAVA_OPTS
             value: -Xmx1g
-          - name: MONGODB_ML_DB
+          - name: MONGODB_DCC_DB
             value: {{ .Values.mongodb.aml_db_name }}
           - name: MONGODB_NAME
             valueFrom:
