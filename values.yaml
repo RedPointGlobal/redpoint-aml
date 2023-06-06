@@ -1,6 +1,6 @@
 global:
   namespace: redpoint-aml #redpoint-aml
-  cloudProvider: azure # or google or amazon 
+  cloudProvider: amazon # or google or amazon 
   ingress:
     subnet_name: snet-rgoc-nonprod-eus2-aks # Replace with your virtual network subnet if cloudprovider is azure
     internal: true
@@ -19,17 +19,17 @@ images:
 
 mongodb:
   enabled: false
-  connection_string: mongodb+srv://<username>:<password>@<mongo server address>/?retryWrites=true&w=majority
-  aml_db_name: redpoint-aml
+  connection_string: mongodb+srv://admin:EHS0pAq6dmQmTPky@redpoint-aml.oht1frq.mongodb.net/?retryWrites=true&w=majority
+  aml_db_name: redpoint-aml-new
 
 keycloak:
   keycloak_user: sso-admin@noemail.com
   keycloak_password: 7rU8w9o8ocTa8Zp1
   postgresql:
     enabled: false
-    db_address: postgresql
-    db_name: deletemetest
-    db_user: keycloak
+    db_address: keycloak.cgp2lmza8ds8.us-east-1.rds.amazonaws.com #keycloak
+    db_name: keycloak
+    db_user: postgres
     db_password: 7rU8w9o8ocTa8Zp1
 
 nginx:
@@ -59,7 +59,7 @@ envs:
   SMTP_PASS: superStrongExamplep@sswd
 
 ingress:
-  host: redpoint-aml.example.com
+  host: redpoint-aml.rdpnt.dev
 
 securityContext:
     runAsUser: 1000
@@ -67,6 +67,7 @@ securityContext:
     fsGroup: 2000
     seccompProfile:
       type: RuntimeDefault
+
 
 
 

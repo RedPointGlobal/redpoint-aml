@@ -21,7 +21,7 @@ spec:
       - name: docker-io
       containers:
       - name: dbapi
-        image: redpointglobal/dcc_servicesapi:{{ .Values.images.tag }}
+        image: redpointglobal/ml_servicesapi:{{ .Values.images.tag }}
         imagePullPolicy: Always
         ports:
         - name: dbapi
@@ -29,7 +29,7 @@ spec:
         env:
           - name: CACHE_CHANNEL
             value: cache_updates
-          - name: CACHE_HOST
+          - name: CACHE_NAME
             value: cache
           - name: CACHE_PORT
             value: "6379"

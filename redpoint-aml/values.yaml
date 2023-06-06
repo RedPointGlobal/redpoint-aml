@@ -67,7 +67,3 @@ securityContext:
     fsGroup: 2000
     seccompProfile:
       type: RuntimeDefault
-
-
-
-
