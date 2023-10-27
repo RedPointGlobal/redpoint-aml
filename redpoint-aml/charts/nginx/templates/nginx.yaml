@@ -387,7 +387,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/version: 1.8.2
+    app.kubernetes.io/version: 1.9.3
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
   name: nginx-{{ include "custom.namespace" . }}
@@ -433,7 +433,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/version: 1.8.2
+    app.kubernetes.io/version: 1.9.3
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
   name: nginx-{{ include "custom.namespace" . }}
@@ -475,7 +475,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/version: 1.8.2
+    app.kubernetes.io/version: 1.9.3
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
   name: nginx-{{ include "custom.namespace" . }}
