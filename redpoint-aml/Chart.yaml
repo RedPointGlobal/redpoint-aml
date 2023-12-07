@@ -5,17 +5,3 @@ description: A Helm chart for Redpoint Automated Machine Learning (AML)
 type: application
 version: 0.1.0
 appVersion: "6.5.2"
-
-dependencies:
-  - name: mongodb
-    version: 0.1.0
-    repository: "redpoint-aml/charts/mongodb"
-    condition: mongodb.enabled
-  - name: nginx
-    version: 0.1.0
-    repository: "redpoint-aml/charts/nginx"
-    condition: nginx.enabled
-  - name: postgresql
-    version: 0.1.0
-    repository: "redpoint-aml/charts/postgresql"
-    condition: keycloak.postgresql.enabled

@@ -1,5 +1,5 @@
 global:
-  namespace: dev-mercury-temp
+  namespace: redpoint-mercury
   cloudProvider: azure 
   ingress:
     subnet_name: snet-aks-workload 
@@ -8,8 +8,8 @@ global:
   auth_services: keycloak 
 
 application:
-  name: dev-mercury-temp
-  environment: rg1-dev
+  name: redpoint-mercury
+  environment: dev
   region: eastus2
 
 images:
@@ -17,20 +17,13 @@ images:
   tag: v6.6.0
   pullSecret: docker-io
 
-mongodb:
-  enabled: false
-  aml_db_name: dev-mercury-temp
-
 keycloak:
   keycloak_user: sso-admin@noemail.com
   postgresql:
     enabled: false
-    db_address: pgsf-rgoc-nonprod-eus2.postgres.database.azure.com
-    db_name: mercury-dockerhub
-    db_user: rpdevsqladmin
-
-nginx:
-  enabled: true
+    db_address: postgres
+    db_name: redpointmercury
+    db_user: redpointmercury
 
 replicas: 1
 
