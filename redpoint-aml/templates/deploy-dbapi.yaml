@@ -25,7 +25,7 @@ spec:
   selector:
     matchLabels:
       app: dbapi
-  replicas: {{  .Values.replicas }}
+  replicas: {{  .Values.global.replicaCount }}
   template:
     metadata:
       labels:
@@ -35,7 +35,7 @@ spec:
       - name: docker-io
       containers:
       - name: dbapi
-        image: redpointglobal/ml_servicesapi:{{ .Values.images.tag }}
+        image: redpointglobal/ml_servicesapi:{{ .Values.global.image_tag }}
         imagePullPolicy: Always
         ports:
         - name: dbapi
@@ -50,7 +50,7 @@ spec:
           - name: _JAVA_OPTIONS
             value: -Xmx750m
           - name: MONGODB_ML_DB
-            value: {{ .Values.mongodb.aml_db_name }}
+            value: mongo-conn-string
           - name: MONGODB_NAME
             valueFrom:
               secretKeyRef:
@@ -89,10 +89,3 @@ spec:
       - name: init-cache
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
-      nodeSelector:
-        pool: rpengshared
-      tolerations:
-        - effect: NoSchedule
-          key: pool
-          operator: Equal
-          value: rpengshared

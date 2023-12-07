@@ -19,29 +19,29 @@ kind: Deployment
 metadata:
   labels:
     role: predictor
-    app: aml
-    version: {{  .Values.images.tag }}
+    app: mercury
+    version: {{  .Values.global.image_tag }}
   name: predictor
   namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: predictor
-      app: aml
-      version: {{  .Values.images.tag }}
-  replicas: {{  .Values.replicas }}
+      app: mercury
+      version: {{  .Values.global.image_tag }}
+  replicas: {{  .Values.global.replicaCount }}
   template:
     metadata:
       labels:
         role: predictor
-        app: aml
-        version: {{  .Values.images.tag }}
+        app: mercury
+        version: {{  .Values.global.image_tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
       containers:
       - name: predictor
-        image: redpointglobal/predictor:{{ .Values.images.tag }}
+        image: redpointglobal/predictor:{{ .Values.global.image_tag }}
         imagePullPolicy: Always
         ports:
         - name: predictor
@@ -68,10 +68,3 @@ spec:
       - name: init-dbapi
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup dbapi; do echo waiting for dbapi; sleep 2; done;']
-      nodeSelector:
-        pool: rpengshared
-      tolerations:
-        - effect: NoSchedule
-          key: pool
-          operator: Equal
-          value: rpengshared

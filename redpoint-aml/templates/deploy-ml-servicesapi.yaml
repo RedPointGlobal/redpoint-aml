@@ -19,26 +19,26 @@ kind: Deployment
 metadata:
   labels:
     role: ml-servicesapi
-    app: aml
+    app: mercury
   name: ml-servicesapi
   namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: ml-servicesapi
-      app: aml
-  replicas: {{  .Values.replicas }}
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
   template:
     metadata:
       labels:
         role: ml-servicesapi
-        app: aml
+        app: mercury
     spec:
       imagePullSecrets:
       - name: docker-io
       containers:
       - name: ml-servicesapi
-        image: redpointglobal/ml_servicesapi:{{ .Values.images.tag }}
+        image: redpointglobal/ml_servicesapi:{{ .Values.global.image_tag }}
         imagePullPolicy: Always
         ports:
         - name: ml-servicesapi
@@ -53,7 +53,7 @@ spec:
         - name: _JAVA_OPTIONS
           value: -Xmx750m
         - name: MONGODB_ML_DB
-          value: {{ .Values.mongodb.aml_db_name }}
+          value: mongo-conn-string
         - name: MONGODB_NAME
           valueFrom:
             secretKeyRef:
@@ -112,20 +112,9 @@ spec:
         - name: SSO_ENABLED
           value: {{ .Values.envs.SSO_ENABLED | quote }}
         - name: KEYCLOAK_USER
-          value: {{ .Values.keycloak.keycloak_user | quote }}
+          value: {{ .Values.databases.keycloak.keycloak_user | quote }}
         - name: KEYCLOAK_PASSWORD
-          value: yKo3BN671b0m
-#          valueFrom:
-#            secretKeyRef:
-#              name: keycloak
-#              key: KEYCLOAK_PASSWORD
-#        livenessProbe:
-#          httpGet:
-#            path: /api-ml/v2/healthcheck
-#            port: 8910
-#          periodSeconds: 20
-#          timeoutSeconds: 15
-#          failureThreshold: 3
+          value: {{ .Values.databases.keycloak.db_password }}
       initContainers:
       - name: init-messageq
         image: busybox:1.28
@@ -134,10 +123,3 @@ spec:
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
       restartPolicy: Always
-      nodeSelector:
-        pool: rpengshared
-      tolerations:
-        - effect: NoSchedule
-          key: pool
-          operator: Equal
-          value: rpengshared

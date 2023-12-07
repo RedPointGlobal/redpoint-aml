@@ -1,31 +1,43 @@
 global:
+  application:
+    name: redpoint-mercury
+    version: "6.6.0"
+    environment: prod 
+  # Define the Kubernetes namespace in which the services will be deployed.
+  # This namespace should already exist or be created prior to deployment.
   namespace: redpoint-mercury
-  cloudProvider: azure 
-  ingress:
-    subnet_name: snet-aks-workload 
-    internal: true
-  replicaCount: 0
-  auth_services: keycloak 
 
-application:
-  name: redpoint-mercury
-  environment: dev
-  region: eastus2
+  # Set the number of replicas for the deployment.
+  # This determines how many instances of each pod will be created.
+  replicaCount: 1
 
-images:
-  repository: redpointglobal
-  tag: v6.6.0
-  pullSecret: docker-io
+  # Specify the image tag for the main application.
+  # This tag refers to a specific version of the docker image to be deployed.
+  image_tag: v6.6.0
 
-keycloak:
-  keycloak_user: sso-admin@noemail.com
-  postgresql:
-    enabled: false
-    db_address: postgres
+  # Select the cloud provider where the infrastructure is hosted.
+  # Options include 'azure', 'google', or 'amazon'.
+  # This setting may influence certain cloud-specific configurations.
+  cloudProvider: azure
+  deploymentType: client
+  # Define the deployment type.
+  # 'client' is for external clients, while 'internal' is reserved for Redpoint users.
+  # This may affect access controls and available features.
+  imagePullPolicy: Always
+  images:
+    repository: redpointglobal
+    tag: v6.6.0
+    pullSecret: docker-io
+
+databases:
+  mongodb:
+    connection_string: mongodb+srv://<username>:<password>@<mongodb server fqdn>/?retryWrites=true
+  keycloak:
+    keycloak_user: sso-admin@noemail.com
+    db_address: postgresql.example.com
     db_name: redpointmercury
     db_user: redpointmercury
-
-replicas: 1
+    db_password: example-password
 
 envs:
   RPI_ENABLED: false 
@@ -49,7 +61,8 @@ envs:
   SMTP_PASS: 
 
 ingress:
-  host: dev-mercury-dockerh.rg1cloud.com
+  domain: rdpnt.com
+  host: redpointmercury
 
 securityContext:
     runAsUser: 1000

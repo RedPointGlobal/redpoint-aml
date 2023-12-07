@@ -18,23 +18,23 @@ kind: Deployment
 metadata:
   labels:
     role: cache
-    app: aml
-    version: {{  .Values.images.tag }}
+    app: mercury
+    version: {{  .Values.global.image_tag }}
   name: cache
   namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: cache
-      app: aml
-      version: {{  .Values.images.tag }}
-  replicas: {{  .Values.replicas }}
+      app: mercury
+      version: {{  .Values.global.image_tag }}
+  replicas: {{  .Values.global.replicaCount }}
   template:
     metadata:
       labels:
         role: cache
-        app: aml
-        version: {{  .Values.images.tag }}
+        app: mercury
+        version: {{  .Values.global.image_tag }}
     spec:
       containers:
       - name: cache
@@ -43,10 +43,3 @@ spec:
         - name: redis
           containerPort: 6379
       restartPolicy: Always
-      nodeSelector:
-        pool: rpengshared
-      tolerations:
-        - effect: NoSchedule
-          key: pool
-          operator: Equal
-          value: rpengshared

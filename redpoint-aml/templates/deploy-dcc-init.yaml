@@ -18,26 +18,26 @@ kind: Deployment
 metadata:
   labels:
     role: dcc-init
-    app: aml
+    app: mercury
   name: dcc-init
   namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: dcc-init
-      app: aml
-  replicas: {{  .Values.replicas }}
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
   template:
     metadata:
       labels:
         role: dcc-init
-        app: aml
+        app: mercury
     spec:
       imagePullSecrets:
       - name: docker-io
       containers:
       - name: dcc-init
-        image: redpointglobal/dcc_servicesapi:{{ .Values.images.tag }}
+        image: redpointglobal/dcc_servicesapi:{{ .Values.global.image_tag }}
         imagePullPolicy: Always
         ports:
         - name: dcc-init
@@ -52,7 +52,7 @@ spec:
         - name: _JAVA_OPTIONS
           value: -Xmx750m
         - name: MONGODB_DCC_DB
-          value: {{ .Values.mongodb.aml_db_name }}
+          value: mongo-conn-string
         - name: MONGODB_NAME
           valueFrom:
             secretKeyRef:
@@ -96,13 +96,9 @@ spec:
         - name: SSO_ENABLED
           value: {{ .Values.envs.SSO_ENABLED | quote }}
         - name: KEYCLOAK_USER
-          value: {{ .Values.keycloak.keycloak_user | quote }}
+          value: {{ .Values.databases.keycloak.keycloak_user | quote }}
         - name: KEYCLOAK_PASSWORD
-          value: yKo3BN671b0m
-#          valueFrom:
-#            secretKeyRef:
-#             name: keycloak
-#              key: KEYCLOAK_PASSWORD
+          value: {{ .Values.databases.keycloak.db_password }}
         livenessProbe:
           httpGet:
             path: /api/v1/healthcheck
@@ -118,11 +114,5 @@ spec:
       - name: init-cache
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
-      nodeSelector:
-        pool: rpengshared
-      tolerations:
-        - effect: NoSchedule
-          key: pool
-          operator: Equal
-          value: rpengshared
+
 

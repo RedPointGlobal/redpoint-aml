@@ -1,7 +1,7 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-admin-api-ingress
+  name: dcc-admin-api
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -25,7 +25,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-apis-ingress
+  name: dcc-apis
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -75,7 +75,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-docs-ingress
+  name: dcc-docs
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -107,7 +107,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-ui-ingress
+  name: dcc-ui
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -139,7 +139,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-api-ml-docs-ingress
+  name: dcc-api-ml-docs
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive

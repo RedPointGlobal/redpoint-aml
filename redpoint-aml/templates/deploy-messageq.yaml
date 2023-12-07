@@ -18,20 +18,20 @@ kind: Deployment
 metadata:
   labels:
     role: messageq
-    app: aml
+    app: mercury
   name: messageq
   namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
       role: messageq
-      app: aml
-  replicas: {{  .Values.replicas }}
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
   template:
     metadata:
       labels:
         role: messageq
-        app: aml 
+        app: mercury 
     spec:
       containers:
       - name: messageq
@@ -49,10 +49,3 @@ spec:
         - name: RABBITMQ_ERLANG_COOKIE
           value: "1234"
       restartPolicy: Always
-      nodeSelector:
-        pool: rpengshared
-      tolerations:
-        - effect: NoSchedule
-          key: pool
-          operator: Equal
-          value: rpengshared
