@@ -43,10 +43,10 @@ envs:
   SSO_ENABLED: true
   MSGQ_TRAINER_CHANNEL: training_tasks
   TRAINING_HEALTHY_MINS: 1500
-  SMTP_HOST: email-smtp.us-east-1.amazonaws.com
-  SMTP_USER: AKIA4YLE5WJY2L7F5COO
+  SMTP_HOST: 
+  SMTP_USER: 
   SMTP_PORT: 587
-  SMTP_PASS: BOEXaMouJWEO9NcsZRZpIHuNPZkqbV33eUo7yNCUYKRm
+  SMTP_PASS: 
 
 ingress:
   host: dev-mercury-dockerh.rg1cloud.com
