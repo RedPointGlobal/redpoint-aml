@@ -32,34 +32,41 @@ spec:
         - name: https
           containerPort: 8443
         env: 
-        - name: KEYCLOAK_USER
-          value: {{ .Values.keycloak.keycloak_user | quote }}
-        - name: KEYCLOAK_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: keycloak
-              key: KEYCLOAK_PASSWORD
+        - name: KEYCLOAK_PRODUCTION
+          value: "false"
+        - name: KEYCLOAK_ADMIN_USER
+          value: "sso-admin@noemail.com"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: yKo3BN671b0m
+#          valueFrom:
+#            secretKeyRef:
+#              name: keycloak
+#              key: KEYCLOAK_PASSWORD
+        - name: KEYCLOAK_DATABASE_PASSWORD
+          value: yKo3BN671b0m
+#          valueFrom:
+#            secretKeyRef:
+#              name: postgresql
+#              key: POSTGRESQL_PASSWORD
+        - name: KEYCLOAK_DATABASE_HOST
+          value: {{ .Values.keycloak.postgresql.db_address | quote }}
+        - name: KEYCLOAK_DATABASE_NAME
+          value: {{ .Values.keycloak.postgresql.db_name | quote }}
+        - name: KEYCLOAK_DATABASE_PORT
+          value: "5432"
+        - name: KEYCLOAK_DATABASE_USER
+          value: {{ .Values.keycloak.postgresql.db_user }}
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
-        - name: DB_VENDOR
-          value: postgres
-        - name: DB_ADDR
-          value: {{ .Values.keycloak.postgresql.db_address | quote }}
-        - name: DB_DATABASE
-          value: {{ .Values.keycloak.postgresql.db_name | quote }}
-        - name: DB_PORT
-          value: "5432"
-        - name: DB_USER
-          value: {{ .Values.keycloak.postgresql.db_user }}
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgresql
-              key: POSTGRESQL_PASSWORD
-        - name: DB_SCHEMA
-          value: public
-        resources: {}
       restartPolicy: Always
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared
+          
 ---
 apiVersion: v1
 kind: Service

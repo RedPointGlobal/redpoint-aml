@@ -1,15 +1,15 @@
 global:
-  namespace: redpoint-aml #redpoint-aml
-  cloudProvider: amazon # or google or amazon 
+  namespace: dev-mercury-temp
+  cloudProvider: azure 
   ingress:
-    subnet_name: snet-rgoc-nonprod-eus2-aks # Replace with your virtual network subnet if cloudprovider is azure
+    subnet_name: snet-aks-workload 
     internal: true
-  replicaCount: 1
-  auth_services: keycloak # or keycloak or mdm
+  replicaCount: 0
+  auth_services: keycloak 
 
 application:
-  name: redpoint-aml
-  environment: dev
+  name: dev-mercury-temp
+  environment: rg1-dev
   region: eastus2
 
 images:
@@ -19,18 +19,15 @@ images:
 
 mongodb:
   enabled: false
-  connection_string: mongodb+srv://admin:EHS0pAq6dmQmTPky@redpoint-aml.oht1frq.mongodb.net/?retryWrites=true&w=majority
-  aml_db_name: redpoint-aml-new
+  aml_db_name: dev-mercury-temp
 
 keycloak:
   keycloak_user: sso-admin@noemail.com
-  keycloak_password: 7rU8w9o8ocTa8Zp1
   postgresql:
     enabled: false
-    db_address: keycloak.cgp2lmza8ds8.us-east-1.rds.amazonaws.com #keycloak
-    db_name: keycloak
-    db_user: postgres
-    db_password: 7rU8w9o8ocTa8Zp1
+    db_address: pgsf-rgoc-nonprod-eus2.postgres.database.azure.com
+    db_name: mercury-dockerhub
+    db_user: rpdevsqladmin
 
 nginx:
   enabled: true
@@ -53,13 +50,13 @@ envs:
   SSO_ENABLED: true
   MSGQ_TRAINER_CHANNEL: training_tasks
   TRAINING_HEALTHY_MINS: 1500
-  SMTP_HOST: smtp.example.com
-  SMTP_USER: example_smtp_user
+  SMTP_HOST: email-smtp.us-east-1.amazonaws.com
+  SMTP_USER: AKIA4YLE5WJY2L7F5COO
   SMTP_PORT: 587
-  SMTP_PASS: superStrongExamplep@sswd
+  SMTP_PASS: BOEXaMouJWEO9NcsZRZpIHuNPZkqbV33eUo7yNCUYKRm
 
 ingress:
-  host: redpoint-aml.rdpnt.dev
+  host: dev-mercury-dockerh.rg1cloud.com
 
 securityContext:
     runAsUser: 1000
@@ -67,8 +64,3 @@ securityContext:
     fsGroup: 2000
     seccompProfile:
       type: RuntimeDefault
-
-
-
-
-

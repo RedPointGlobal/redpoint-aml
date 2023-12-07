@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbapi
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: dbapi
+spec:
+  ports:
+  - port: 8910
+    protocol: TCP
+  selector:
+    app: dbapi
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -33,9 +47,9 @@ spec:
             value: cache
           - name: CACHE_PORT
             value: "6379"
-          - name: JAVA_OPTS
-            value: -Xmx1g
-          - name: MONGODB_DCC_DB
+          - name: _JAVA_OPTIONS
+            value: -Xmx750m
+          - name: MONGODB_ML_DB
             value: {{ .Values.mongodb.aml_db_name }}
           - name: MONGODB_NAME
             valueFrom:
@@ -75,3 +89,10 @@ spec:
       - name: init-cache
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared

@@ -1,11 +1,24 @@
-# messageq deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: messageq
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: messageq
+spec:
+  ports:
+  - port: 5672
+    protocol: TCP
+  selector:
+    role: messageq
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     role: messageq
     app: aml
-    version: {{  .Values.images.tag }}
   name: messageq
   namespace: {{ .Values.global.namespace }}
 spec:
@@ -13,14 +26,12 @@ spec:
     matchLabels:
       role: messageq
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: messageq
         app: aml 
-        version: {{  .Values.images.tag }}
     spec:
       containers:
       - name: messageq
@@ -38,3 +49,10 @@ spec:
         - name: RABBITMQ_ERLANG_COOKIE
           value: "1234"
       restartPolicy: Always
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared

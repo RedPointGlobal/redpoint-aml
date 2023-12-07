@@ -1,4 +1,18 @@
-# dcc-init Deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-init
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: dcc-init
+spec:
+  ports:
+  - port: 8900
+    protocol: TCP
+  selector:
+    role: dcc-init
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,14 +35,6 @@ spec:
     spec:
       imagePullSecrets:
       - name: docker-io
-      {{- if eq .Values.global.auth_services "keycloak" }}
-      initContainers:
-      - name: wait-for-keycloak
-        image: bitnami/kubectl
-        command: ['sh', '-c', 'until kubectl logs -n {{ .Values.global.namespace }} $(kubectl get pods -n redpoint-aml -l app=keycloak -o jsonpath="{.items[0].metadata.name}") | grep "Admin console listening on http://127.0.0.1:9990"; do echo "Waiting for Keycloak"; sleep 5; done;']
-        securityContext:
-          runAsUser: 0
-      {{- end }}
       containers:
       - name: dcc-init
         image: redpointglobal/dcc_servicesapi:{{ .Values.images.tag }}
@@ -43,8 +49,8 @@ spec:
           value: cache
         - name: CACHE_PORT
           value: "6379"
-        - name: JAVA_OPTS
-          value: -Xmx8g
+        - name: _JAVA_OPTIONS
+          value: -Xmx750m
         - name: MONGODB_DCC_DB
           value: {{ .Values.mongodb.aml_db_name }}
         - name: MONGODB_NAME
@@ -92,10 +98,11 @@ spec:
         - name: KEYCLOAK_USER
           value: {{ .Values.keycloak.keycloak_user | quote }}
         - name: KEYCLOAK_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: keycloak
-              key: KEYCLOAK_PASSWORD
+          value: yKo3BN671b0m
+#          valueFrom:
+#            secretKeyRef:
+#             name: keycloak
+#              key: KEYCLOAK_PASSWORD
         livenessProbe:
           httpGet:
             path: /api/v1/healthcheck
@@ -111,9 +118,11 @@ spec:
       - name: init-cache
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
-      - name: init-auth
-        image: busybox:1.28
-        command: ['sh', '-c', 'until nslookup auth-services; do echo waiting for auth-services; sleep 2; done;']
-      restartPolicy: Always
-
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared
 

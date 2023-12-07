@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: ingress-tls
+    - secretName: cert-rg1cloud-com
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -38,7 +38,7 @@ metadata:
 spec:
   ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: ingress-tls
+    - secretName: cert-rg1cloud-com
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -83,7 +83,7 @@ metadata:
 spec:
   ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: ingress-tls
+    - secretName: cert-rg1cloud-com
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -115,7 +115,7 @@ metadata:
 spec:
   ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: ingress-tls
+    - secretName: cert-rg1cloud-com
   rules:
     - host: {{ .Values.ingress.host }}
       http:
@@ -126,39 +126,14 @@ spec:
               service:
                 name: dcc-ui
                 port:
-                  number: 8980
+                  number: 8080 #8980
           - path: /admin/(.*)
             pathType: Prefix
             backend:
               service:
                 name: dcc-admin-ui
                 port:
-                  number: 8990
----
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: keycloak-ingress
-  namespace: {{ .Values.global.namespace }}
-  annotations:
-    nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
-spec:
-  ingressClassName: class-{{ .Values.global.namespace }}
-  tls:
-    - secretName: ingress-tls
-  rules:
-    - host: sso-{{ .Values.ingress.host }}
-      http:
-        paths:
-          - path: /(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak
-                port:
-                  number: 8040
+                  number: 8080 #8990
 
 ---
 kind: Ingress
@@ -175,7 +150,7 @@ metadata:
 spec:
   ingressClassName: class-{{ .Values.global.namespace }}
   tls:
-    - secretName: ingress-tls
+    - secretName: cert-rg1cloud-com
   rules:
     - host: {{ .Values.ingress.host }}
       http:

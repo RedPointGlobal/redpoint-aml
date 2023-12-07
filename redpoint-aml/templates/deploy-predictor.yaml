@@ -1,4 +1,19 @@
-# Predictor deployment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: predictor
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: predictor
+spec:
+  ports:
+  - port: 11000
+    protocol: TCP
+  selector:
+    role: predictor
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,3 +68,10 @@ spec:
       - name: init-dbapi
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup dbapi; do echo waiting for dbapi; sleep 2; done;']
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared

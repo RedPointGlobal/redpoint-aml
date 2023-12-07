@@ -1,4 +1,18 @@
-# dcc-admin-ui Deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcc-admin-ui
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: dcc-admin-ui
+spec:
+  ports:
+  - port: 8080 
+    protocol: TCP
+  selector:
+    role: dcc-admin-ui
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,7 +42,7 @@ spec:
         imagePullPolicy: Always
         ports:
         - name: dcc-admin-ui
-          containerPort: 8990
+          containerPort: 8080 #8990
         env: 
           - name: DCC_API_NAME
             value: dcc-servicesapi
@@ -45,7 +59,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /index.html
-            port: 8990
+            port: 8080
           periodSeconds: 20
           timeoutSeconds: 15
           failureThreshold: 3
@@ -53,3 +67,10 @@ spec:
       - name: init-dcc-servicesapi
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup dcc-servicesapi; do echo waiting for dcc-servicesapi; sleep 2; done;']
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared

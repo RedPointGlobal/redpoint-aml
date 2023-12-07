@@ -1,11 +1,25 @@
-# ml-servicesapi Deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-servicesapi
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: ml-servicesapi
+spec:
+  ports:
+  - name: mlapi
+    port: 8910
+    targetPort: 8910
+  selector:
+    role: ml-servicesapi
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     role: ml-servicesapi
     app: aml
-    version: {{  .Values.images.tag }}
   name: ml-servicesapi
   namespace: {{ .Values.global.namespace }}
 spec:
@@ -13,25 +27,15 @@ spec:
     matchLabels:
       role: ml-servicesapi
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: ml-servicesapi
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
-      {{- if eq .Values.global.auth_services "keycloak" }}
-      initContainers:
-      - name: wait-for-keycloak
-        image: bitnami/kubectl
-        command: ['sh', '-c', 'until kubectl logs -n {{ .Values.global.namespace }} $(kubectl get pods -n redpoint-aml -l app=keycloak -o jsonpath="{.items[0].metadata.name}") | grep "Admin console listening on http://127.0.0.1:9990"; do echo "Waiting for Keycloak"; sleep 5; done;']
-        securityContext:
-          runAsUser: 0
-      {{- end }}
       containers:
       - name: ml-servicesapi
         image: redpointglobal/ml_servicesapi:{{ .Values.images.tag }}
@@ -46,8 +50,8 @@ spec:
           value: cache
         - name: CACHE_PORT
           value: "6379"
-        - name: JAVA_OPTS
-          value: -Xmx1g
+        - name: _JAVA_OPTIONS
+          value: -Xmx750m
         - name: MONGODB_ML_DB
           value: {{ .Values.mongodb.aml_db_name }}
         - name: MONGODB_NAME
@@ -110,17 +114,18 @@ spec:
         - name: KEYCLOAK_USER
           value: {{ .Values.keycloak.keycloak_user | quote }}
         - name: KEYCLOAK_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: keycloak
-              key: KEYCLOAK_PASSWORD
-        livenessProbe:
-          httpGet:
-            path: /api-ml/v2/healthcheck
-            port: 8910
-          periodSeconds: 20
-          timeoutSeconds: 15
-          failureThreshold: 3
+          value: yKo3BN671b0m
+#          valueFrom:
+#            secretKeyRef:
+#              name: keycloak
+#              key: KEYCLOAK_PASSWORD
+#        livenessProbe:
+#          httpGet:
+#            path: /api-ml/v2/healthcheck
+#            port: 8910
+#          periodSeconds: 20
+#          timeoutSeconds: 15
+#          failureThreshold: 3
       initContainers:
       - name: init-messageq
         image: busybox:1.28
@@ -129,3 +134,10 @@ spec:
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
       restartPolicy: Always
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared

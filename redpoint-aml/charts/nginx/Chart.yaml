@@ -1,7 +1,0 @@
-apiVersion: v2
-name: nginx
-description: A Helm chart for Nginx Ingress Controller
-
-type: application
-version: 1.8.2
-appVersion: "1.16.0"

@@ -1,11 +1,24 @@
-# Trainer Deployment
+apiVersion: v1
+kind: Service
+metadata:
+  name: trainer
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    role: trainer
+spec:
+  ports:
+  - port: 11001
+    protocol: TCP
+  selector:
+    role: trainer
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     role: trainer
     app: aml
-    version: {{  .Values.images.tag }}
   name: trainer
   namespace: {{ .Values.global.namespace }}
 spec:
@@ -13,14 +26,12 @@ spec:
     matchLabels:
       role: trainer
       app: aml
-      version: {{  .Values.images.tag }}
   replicas: {{  .Values.replicas }}
   template:
     metadata:
       labels:
         role: trainer
         app: aml
-        version: {{  .Values.images.tag }}
     spec:
       imagePullSecrets:
       - name: docker-io
@@ -62,3 +73,10 @@ spec:
       - name: init-dbapi
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup dbapi; do echo waiting for dbapi; sleep 2; done;']
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared
