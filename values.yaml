@@ -14,7 +14,7 @@ application:
 
 images:
   repository: redpointglobal
-  tag: v6.5.2
+  tag: v6.6.0
   pullSecret: docker-io
 
 mongodb:
