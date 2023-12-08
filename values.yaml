@@ -30,14 +30,35 @@ global:
     pullSecret: docker-io
 
 databases:
+  # MongoDB Configuration
   mongodb:
+    # Provide the MongoDB connection string.
+    # Replace <username>, <password>, and <mongodb server fqdn> with your MongoDB credentials and server details.
+    # This string is used to establish a connection to your MongoDB database.
     connection_string: mongodb+srv://<username>:<password>@<mongodb server fqdn>/?retryWrites=true
+
+  # Keycloak Database Configuration
   keycloak:
+    # Specify the Keycloak admin user's email.
+    # This email is used for administrative access to the Keycloak instance.
     keycloak_user: sso-admin@noemail.com
+
+    # Define the address of the PostgreSQL server used by Keycloak.
+    # This should be the fully qualified domain name (FQDN) of your PostgreSQL server.
     db_address: postgresql.example.com
+
+    # Name of the Keycloak database in PostgreSQL.
+    # This is the specific database where Keycloak stores its data.
     db_name: redpointmercury
+
+    # Set the username for accessing the Keycloak database.
+    # This user should have the necessary permissions on the Keycloak database.
     db_user: redpointmercury
+
+    # Provide the password for the Keycloak database user.
+    # Ensure this password is kept secure and known only to authorized personnel.
     db_password: example-password
+
 
 envs:
   RPI_ENABLED: false 

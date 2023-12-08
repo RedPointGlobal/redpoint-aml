@@ -7,11 +7,11 @@ metadata:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /api/$1
 spec:
-  ingressClassName: class-{{ .Values.global.namespace }}
+  ingressClassName: {{ .Values.global.namespace }}
   tls:
-    - secretName: cert-rg1cloud-com
+    - secretName: ingress-tls
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
       http:
         paths:
           - path: /admin/api/(.*)
@@ -36,11 +36,11 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
     nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
 spec:
-  ingressClassName: class-{{ .Values.global.namespace }}
+  ingressClassName: {{ .Values.global.namespace }}
   tls:
-    - secretName: cert-rg1cloud-com
+    - secretName: ingress-tls
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
       http:
         paths:
           - path: /(api-ml/.*)
@@ -81,11 +81,11 @@ metadata:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /docs/$1
 spec:
-  ingressClassName: class-{{ .Values.global.namespace }}
+  ingressClassName: {{ .Values.global.namespace }}
   tls:
-    - secretName: cert-rg1cloud-com
+    - secretName: ingress-tls
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
       http:
         paths:
           - path: /docs-ml/(.*)
@@ -113,11 +113,11 @@ metadata:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
-  ingressClassName: class-{{ .Values.global.namespace }}
+  ingressClassName: {{ .Values.global.namespace }}
   tls:
-    - secretName: cert-rg1cloud-com
+    - secretName: ingress-tls
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
       http:
         paths:
           - path: /(.*)
@@ -148,11 +148,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: '3600'
     nginx.ingress.kubernetes.io/websocket-services: dcc-socketio
 spec:
-  ingressClassName: class-{{ .Values.global.namespace }}
+  ingressClassName: {{ .Values.global.namespace }}
   tls:
-    - secretName: cert-rg1cloud-com
+    - secretName: ingress-tls
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
       http:
         paths:
           - path: /api-ml/docs/
