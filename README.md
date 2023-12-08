@@ -77,7 +77,7 @@ In the ```values.yaml``` file, under the global application settings, specify th
 
 - Create Kubernetes Namespace:
 
-Run the following command to create a Kubernetes namespace where the RPI services will be deployed:
+Run the following command to create a Kubernetes namespace where the Mercury services will be deployed:
 ```
 kubectl create namespace redpoint-mercury
 ```
