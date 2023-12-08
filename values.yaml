@@ -61,7 +61,14 @@ databases:
 
 
 envs:
+  # Default Admin User for Mercury
+  # This is the username for the default administrative account.
+  # Note: It is recommended to change this from the default for security purposes.
   DEFAULT_DCC_ADMIN_USER: admin@redpointmercury.com
+
+  # Default Admin Password for Mercury
+  # This is the password for the default administrative account.
+  # Note: It is crucial to change this default password to maintain system security.
   DEFAULT_DCC_ADMIN_PASS: .RedPoint123
   # Enable or disable the RPI service.
   # Set to 'true' to enable or 'false' to disable.
