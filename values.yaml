@@ -135,10 +135,26 @@ envs:
   # Ensure this password is stored securely.
   SMTP_PASS: example-smtp-password
 
-
 ingress:
-  domain: rdpnt.com
+  # Specify whether the ingress is internal-only.
+  # Set to 'true' to restrict access to within the internal network.
+  internal: true
+
+  # Define the subnet used by the ingress controller.
+  # This should correspond to a specific subnet in your network configuration, typically in a VNET or VPC.
+  subnet: snet-aks-workloads
+
+  # Specify the domain name for the ingress resources.
+  # This domain will be used to access the services deployed under this ingress.
+  domain: example.com
+
+  # Annotations can be used to customize the behavior of the ingress controller.
+  # Add any specific annotations required for your ingress setup here.
+  annotations: {}
+
+  # Define hostname for your Mercury endpoints
   host: redpointmercury
+
 
 securityContext:
     runAsUser: 1000
