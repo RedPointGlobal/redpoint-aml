@@ -37,14 +37,14 @@ Below, is a detailed diagram illustrating the deployment architecture. This visu
 
 - Kubernetes Cluster:
 
-  Version: Use the latest stable version of Kubernetes for compatibility and security.
-  Nodepool Configuration:
-  Minimum of 2 nodes for high availability.
-  Each node should have at least 8 vCPUs and 16 GB of memory.
-  A minimum of 100 GB free disk space per node.
-  Supported Environments:
-  Self-hosted Kubernetes clusters.
-  Managed Kubernetes services like Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS), or Google Kubernetes Engine (GKE).
+  - Version: Use the latest stable version of Kubernetes for compatibility and security.
+  - Nodepool Configuration:
+  - Minimum of 2 nodes for high availability.
+  - Each node should have at least 8 vCPUs and 16 GB of memory.
+  - A minimum of 100 GB free disk space per node.
+  - Supported Environments:
+  - Self-hosted Kubernetes clusters.
+  - Managed Kubernetes services like Azure Kubernetes Service (AKS), Amazon - Elastic Kubernetes Service (EKS), or Google Kubernetes Engine (GKE).
     
 ### Prerequisites
 
