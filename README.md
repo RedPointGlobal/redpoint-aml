@@ -47,24 +47,13 @@ Before installing Mercury, ensure that the following requirements are met:
 
 1. Access to a Kubernetes cluster is essential. If you don't have one, consider setting up a Kubernetes solution following the guidelines provided by Kubernetes for [Production](https://kubernetes.io/docs/setup/production-environment/turnkey-solutions/)
 2. Install kubectl, a command-line tool for interacting with your Kubernetes cluster. Detailed installation instructions can be found [Here](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
-3.  Ensure the availability of a MongoDB Server for hosting Mercury databases. 
+3.  Ensure the availability of a MongoDB and a PostgreSQL server for hosting Mercury databases. 
 4. To access Mercury's container images, request access to Redpoint's container registry. Open a support ticket at support@redpointglobal.com requesting access to the Mercury repository.
 5. An activation key is required to use Mercury. Contact Redpoint support to obtain your license key
 
-
-//////////////
-Before you install Mercury, you must:
-
-1. Have a Kubernetes solution available to use. ( https://kubernetes.io/docs/setup/production-environment/turnkey-solutions/ )
-2. Install kubectl. ( https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/ )
-3. Have a MongoDB server available to use for Mercury system databases
-4. Have a PostgreSQL server available to use for Keycloak
-5. Docker ID, create one at https://hub.docker.com/ and provide the account ID to Redpoint Support so they can grant you permissions to pull the Mercury container images
-5. Have a License key to activate Mercury. Contact Redpoint support for an activation key
-
 | **NOTE:** Before you Begin!           |
 |---------------------------------------|
-| This guide assumes Microsoft Azure is the underlying platform for your Kubernetes infrastructure. However Mercury can also be deployed on clusters within the Amazon and Google Cloud platforms. Before installing Mercury, set the target Cloud platform in the ```values.yaml``` file as shown below
+| This guide is primarily tailored for deployments on Microsoft Azure. However, Mercury is also compatible with Amazon Web Services (AWS) and Google Cloud Platform (GCP). Ensure you select the appropriate cloud provider in the values.yaml file before proceeding with the installation. This setting can be found in the global section of values.yaml.|
 
 ### Install Procedure
 The default installation creates kubernetes deployments for MongoDB and PostgreSQL. This is fine for a DEMO environment. However, for production workloads, you must disable these and instead provide connection strings for your production servers as shown in ```STEP 4```
