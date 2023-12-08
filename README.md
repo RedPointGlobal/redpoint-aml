@@ -1,10 +1,10 @@
 ![RG](https://user-images.githubusercontent.com/42842390/158004336-60f07c05-7e5d-420e-87a6-22c5ac206fb6.jpg)
 ## Redpoint Automated Machine Learning (AML) - Deployment on Kubernetes
-AML gives you the ability to use machine learning on your data without requiring data scientist-level expertise. 
+Redpoint Automated Machine Learning (AML) revolutionizes the way you apply machine learning to your data. It's designed to simplify and streamline the process, making advanced machine learning accessible even if you don't have extensive data science expertise.
 
-In this guide, we take a Step-by-Step deployment of Redpoint Automated Machine Learning (AML) on Kubernetes using HELM. 
+This guide will walk you through a step-by-step deployment of Redpoint AML on a Kubernetes environment, using Helm for efficient and manageable deployment. 
 
-The diagram below shows the deployment architecture
+Below, is a detailed diagram illustrating the deployment architecture. This visual representation will help you understand how Redpoint AML integrates within your Kubernetes infrastructure, ensuring a smooth and successful deployment
 ![803174cf-6ab4-4c8a-998c-7b959ee6b31c](https://user-images.githubusercontent.com/42842390/197833963-45b725f0-947e-4884-914b-c6942d6d883d.png)
 
 ### Table of Contents
