@@ -147,11 +147,11 @@ Add a DNS record in your DNS zone. This record should point to the IP address of
 
 With the DNS configuration in place, you're ready to access the Mercury interfaces:
 ```
-https://redpointmercury.example.com              # Web UI and User login
-https://redpointmercury.example.com/auth/        # Keycloak Web UI
-https://redpointmercury.example.com/admin/       # Activation and Admin Setup page
-https://redpointmercury.example.com/docs/        # Swagger Authentication and Mercury Services API docs
-https://redpointmercury.example.com/docs-ml/     # Swagger AML API docs
+https://redpointmercury.example.com              # Mercury Web UI
+https://redpointmercury.example.com/auth/        # Keycloak Management Console
+https://redpointmercury.example.com/admin/       # Mercury Admin Setup
+https://redpointmercury.example.com/docs/        # Mercury Swagger API docs
+https://redpointmercury.example.com/docs-ml/     # Mercury Swagger ML API docs
 ````
 ### Mercury Activation
 After receiving your activation key from Redpoint Support, you can activate your Mercury instance. Follow these steps to access the Mercury admin UI and enter your license key:
