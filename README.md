@@ -169,12 +169,20 @@ envs:
 ![image](https://user-images.githubusercontent.com/42842390/218563945-94a5b162-dc59-45ae-900e-130a84810f66.png)
 
 ### RPI Integration
-To configure Mercury integration with Redpoint Interaction (RPI), you need to provide the FQDN of the RPI server. This can be done by updating the section below in the ```values.yaml``` file. Before enabling RPI integration, the integration API setup must be completed in RPI. Ensure the Mercury deployment has network and firewall connectivity with the RPI server on port 443
+Enabling RPI integration will allow Mercury to effectively communicate and synchronize with the RPI server, leveraging its capabilities to enhance overall functionality.
+
+Integrating Mercury with Redpoint Interaction (RPI) requires a few key configurations. Follow these steps to enable and configure RPI integration:
+
+- Ensure that the RPI server is fully set up and operational. This includes having the integration API configured within RPI.
+
+- Verify that there is proper network and firewall connectivity between the Mercury deployment and the RPI server. Specifically, ensure connectivity over port 443, which is used for secure communication
+
+- Modify the envs section of the ```values.yaml```
 ```
 envs:
-  RPI_ENABLED: false            # Change this to true
-  RPI_CACHES_ENABLED: false     # Change this to true
-  RPI_NAME: rpi.example.com     # Replace with the FQDN of your RPI server
+  RPI_ENABLED: true            # Enable RPI integration
+  RPI_CACHES_ENABLED: true     # Enable RPI caching feature
+  RPI_NAME: rpi.example.com    # Replace with your RPI server's FQDN
 ```
 
 ### Mercury Documentation
