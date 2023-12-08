@@ -113,7 +113,7 @@ cd redpoint-mercury
 ```
 - Execute the following Helm command to install RPI on your Kubernetes cluster, using the configurations set in your ```values.yaml``` file:
 ```
-helm install redpoint-mercury redpoint-mercury/ --values ```values.yaml```
+helm install redpoint-mercury redpoint-mercury/ --values values.yaml
 
 ```
 If everything goes well, You should see the output below.
@@ -128,40 +128,22 @@ TEST SUITE: None
 ```
 It takes a few minutes for the all the Mercury services to start. Please wait about 5-10 minutes before proceeding to retrieve the ingress endpoints in the next step.
 
-### Mercury Ingress
-8. The default installation creates an nginx ingress controller to expose the Mercury Web UI endpoints. To terminate TLS, provide a TLS certificate for your custom domain by creating the kubernetes secret containing your certificate data
-```
-kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-mercury
-```
-If you prefer to use a different Ingress solution, you can disable the default ingress creation in the ```values.yaml``` file as shown below
-```
-nginx:
-  enabled: true # Change this to False to disable Nginx
-```
-
 ### Mercury Endpoints
-Run the command below to retrieve the Mercury endpoints. 
+- Retrieving Endpoints:
+To view the Mercury endpoints, use the following kubectl command. This command lists all the ingress resources in the redpoint-mercury namespace, showing you the configured endpoints.
 ```
 kubectl get ingress --namespace redpoint-mercury
-```
-If you dont see an IP address, it because it takes a couple minutes for the ingress load balancer to be created. Wait a few minutes and run the command once more and you should eventually see an IP address returned as shown in the example below
 
 ```
-dcc-admin-api-ingress     nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
-dcc-api-ml-docs-ingress   nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
-dcc-apis-ingress          nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
-dcc-docs-ingress          nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
-dcc-ui-ingress            nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
-```
-Next you need to create the corresponding DNS record in your DNS zone 
+Initially, you might not see an IP address for your endpoints. This delay is normal and occurs because it takes some time for the ingress load balancer to be provisioned. If no IP address is displayed, wait a few minutes and then re-run the command. Once the load balancer is ready, you should see output similar to the following, where <Load Balancer IP> will be replaced with the actual IP address:
 
-At this point, the default installation is complete. You can now access the Mercury User login and Swagger endpoints as described below
 ```
-https://redpoint-mercury.example.com              # Web UI and User login
-https://redpoint-mercury.example.com/auth/        # Keycloak Web UI
-https://redpoint-mercury.example.com/admin/       # Activation and Admin Setup page
-https://redpoint-mercury.example.com/docs/        # Swagger Authentication and RPI Services API docs
-https://redpoint-mercury.example.com/docs-ml/     # Swagger Mercury API docs
+dcc-admin-api-ingress     redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
+dcc-api-ml-docs-ingress   redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
+dcc-apis-ingress          redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
+dcc-docs-ingress          redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
+dcc-ui-ingress            redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
+
 ```
 ### Mercury Activation
 Once you obtain your activation key from Redpoint Support, access the Mercury admin UI and enter the license.
