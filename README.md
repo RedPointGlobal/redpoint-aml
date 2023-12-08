@@ -21,19 +21,19 @@ Below, is a detailed diagram illustrating the deployment architecture. This visu
 
 - MongoDB Server for System Databases:
 
-  Version: 5.0 or later.
-  Memory: At least 16 GB.
-  Disk Space: Minimum of 100 GB free space.
-  Disk Type: SSDs recommended for optimal I/O performance.
-  Supported Environments:
-  Azure Cosmos DB.
-  MongoDB on Linux.
-  MongoDB Atlas.
+  - Version: 5.0 or later.
+  - Memory: At least 16 GB.
+  - Disk Space: Minimum of 100 GB free space.
+  - Disk Type: SSDs recommended for optimal I/O performance.
+  - Supported Environments:
+  - Azure Cosmos DB.
+  - MongoDB on Linux.
+  - MongoDB Atlas.
 
 - PostgreSQL Server for Keycloak:
 
-  Version: 12.0 or later.
-  Memory: At least 2 GB.
+  - Version: 12.0 or later.
+  - Memory: At least 2 GB.
 
 - Kubernetes Cluster:
 
