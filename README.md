@@ -142,21 +142,20 @@ dcc-api-ml-docs-ingress   redpointmercury.example.com   <Load Balancer IP>   80,
 dcc-apis-ingress          redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
 dcc-docs-ingress          redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
 dcc-ui-ingress            redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
-
 ```
 ### Mercury Activation
 After receiving your activation key from Redpoint Support, you can activate your Mercury instance. Follow these steps to access the Mercury admin UI and enter your license key:
 
 - Navigate to the Mercury admin UI using your web browser. This interface is where you will enter the provided activation key.
 
-- Use the default login credentials to access the admin panel:
+- Use the default login credentials that you set in the ```values.yaml``` to access the admin panel:
 ```
-Username: admin@noemail.com
-Password: .RedPoint123
+envs:
+  DEFAULT_DCC_ADMIN_USER: <your admin username>
+  DEFAULT_DCC_ADMIN_PASS: <your admin password>
 ```
 - Once logged in, locate the section for license activation and enter the activation key you received from Redpoint Support.
 
-Note: It's highly recommended to change the default password after your initial login for enhanced security. Follow the on-screen instructions or consult the user guide for steps on updating your credentials.
 ![image](https://user-images.githubusercontent.com/42842390/218563945-94a5b162-dc59-45ae-900e-130a84810f66.png)
 
 ### RPI Integration
