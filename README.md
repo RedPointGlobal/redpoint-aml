@@ -26,9 +26,9 @@ Below, is a detailed diagram illustrating the deployment architecture. This visu
   - Disk Space: Minimum of 100 GB free space.
   - Disk Type: SSDs recommended for optimal I/O performance.
   - Supported Environments:
-  - Azure Cosmos DB.
-  - MongoDB on Linux.
-  - MongoDB Atlas.
+    - Azure Cosmos DB.
+    - MongoDB on Linux.
+    - MongoDB Atlas.
 
 - PostgreSQL Server for Keycloak:
 
@@ -37,14 +37,11 @@ Below, is a detailed diagram illustrating the deployment architecture. This visu
 
 - Kubernetes Cluster:
 
-  - Version: Use the latest stable version of Kubernetes for compatibility and security.
-  - Nodepool Configuration:
+  - Use the latest stable version of Kubernetes for compatibility and security.
   - Minimum of 2 nodes for high availability.
   - Each node should have at least 8 vCPUs and 16 GB of memory.
   - A minimum of 100 GB free disk space per node.
-  - Supported Environments:
-  - Self-hosted Kubernetes clusters.
-  - Managed Kubernetes services like Azure Kubernetes Service (AKS), Amazon - Elastic Kubernetes Service (EKS), or Google Kubernetes Engine (GKE).
+  - Managed Kubernetes services like Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS), or Google Kubernetes Engine (GKE).
     
 ### Prerequisites
 
