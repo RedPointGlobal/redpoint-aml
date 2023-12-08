@@ -93,7 +93,7 @@ spec:
         - name: SMTP_PASS
           value: {{ .Values.envs.SMTP_PASS }}
         - name: SITE_URL
-          value: {{ .Values.envs.SITE_URL | quote }}
+          value: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
         - name: RABBITMQ_ENABLED
           value: "true"
         - name: RABBITMQ_NAME
@@ -205,7 +205,7 @@ spec:
         - name: SMTP_PASS
           value: {{ .Values.envs.SMTP_PASS }}
         - name: SITE_URL
-          value: {{ .Values.envs.SITE_URL | quote }}
+          value: {{  .Values.ingress.host  }}.{{  .Values.ingress.domain }}
         - name: RABBITMQ_ENABLED
           value: "true"
         - name: RABBITMQ_NAME

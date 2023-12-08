@@ -61,25 +61,71 @@ databases:
 
 
 envs:
+  # Enable or disable the RPI service.
+  # Set to 'true' to enable or 'false' to disable.
   RPI_ENABLED: false 
+
+  # Enable or disable caching mechanisms in RPI.
+  # Caching can improve performance in data-intensive operations.
   RPI_CACHES_ENABLED: true
-  RPI_NAME: rpi.example.com             # FQDN on your RPI server (Optional - Only required for RPI integration) 
-  RPDM_HOST: rpdm.example.com           # FQDN on your RPDM server (Optional - Only required for RPDM integration) 
+
+  # Define the Fully Qualified Domain Name (FQDN) of your RPI server.
+  # This is optional and only required if you are integrating with RPI.
+  RPI_NAME: rpi.example.com
+
+  # Specify the FQDN of your RPDM server.
+  # This is optional and only needed for integrating with RPDM.
+  RPDM_HOST: rpdm.example.com
+
+  # Set the port number for the RPDM server connection.
   RPDM_PORT: 20420
-  RPDM_USER: rpdm.svs                   # RPDM username
-  RPDM_PASS: "example-password" 
+
+  # Enter the username for the RPDM service.
+  RPDM_USER: rpdm.svs
+
+  # Provide the password for the RPDM user.
+  # Ensure this password is stored securely.
+  RPDM_PASS: "example-password"
+
+  # Specify the storage type for dataset CSV files.
+  # Example: Azure Data Lake Storage Gen2 (ADL2)
   DATASET_CSV_STORAGE: ADL2
+
+  # Define the directory path for storing dataset CSV files.
   DATASET_CSV_DIR: /example
-  ADL2_ACCOUNT_NAME: example               
-  SITE_URL: 
+
+  # Set the account name for the Azure Data Lake Storage Gen2 service.
+  ADL2_ACCOUNT_NAME: redpointmercury
+
+  # Set the read timeout for RPI in milliseconds.
+  # This value determines how long the system waits before timing out a read operation.
   RPI_READ_TIMEOUT: 300000
+
+  # Enable or disable Single Sign-On (SSO) functionality.
+  # Set to 'true' to enable SSO.
   SSO_ENABLED: true
+
+  # Define the message queue channel for training tasks.
+  # This channel is used for queuing and processing training-related tasks.
   MSGQ_TRAINER_CHANNEL: training_tasks
+
+  # Specify the duration (in minutes) to consider the training service as healthy.
   TRAINING_HEALTHY_MINS: 1500
-  SMTP_HOST: 
-  SMTP_USER: 
+
+  # Enter the host address for the SMTP server.
+  # This is used for email sending functionalities.
+  SMTP_HOST: smtp.example.com
+
+  # Provide the username for the SMTP server.
+  SMTP_USER: example-smtp-user
+
+  # Set the port number for the SMTP server.
   SMTP_PORT: 587
-  SMTP_PASS: 
+
+  # Enter the password for the SMTP server.
+  # Ensure this password is stored securely.
+  SMTP_PASS: example-smtp-password
+
 
 ingress:
   domain: rdpnt.com
