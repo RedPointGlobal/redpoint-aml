@@ -1,7 +1,7 @@
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-admin-api
+  name: mercury-admin
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -25,7 +25,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-apis
+  name: mercury-apis
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -75,7 +75,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-docs
+  name: mercury-docs
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -107,7 +107,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-ui
+  name: mercury-ui
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
@@ -139,7 +139,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dcc-api-ml-docs
+  name: mercury-ml-docs
   namespace: {{ .Values.global.namespace }}
   annotations:
     nginx.ingress.kubernetes.io/connection-proxy-header: keep-alive
