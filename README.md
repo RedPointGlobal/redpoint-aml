@@ -19,28 +19,32 @@ Below, is a detailed diagram illustrating the deployment architecture. This visu
 
 ### System Requirements
 
-- MongoDB server for system databases
-    - Version 5 or later
-    - 16 GB Memory or more
-    - 100 GB or more free disk space.
-    - SSD disks for best IO perfomance
-    - The MongoDB database can be any of the following
-       - Azure Cosmos DB
-       - MongoDB on Linux
-       - MongoDB Atlas
+- MongoDB Server for System Databases:
 
-- PostgreSQL server for Keycloak 
-    - Version 12 or later
-    - 2 GB Memory or more
+  Version: 5.0 or later.
+  Memory: At least 16 GB.
+  Disk Space: Minimum of 100 GB free space.
+  Disk Type: SSDs recommended for optimal I/O performance.
+  Supported Environments:
+  Azure Cosmos DB.
+  MongoDB on Linux.
+  MongoDB Atlas.
 
-- Kubernetes Cluster
-    - Latest stable version of Kubernetes
-    - Nodepool with 2 or more nodes for high availabilty
-    - 8 vCPUs and 16 GB memory per node
-    - 100 GB or more free disk space per node
-    - The Kubernetes cluster can be any of the following
-       - Self hosted Kubernetes
-       - Managed Kubernetes (AKS, EKS, GKE)
+- PostgreSQL Server for Keycloak:
+
+  Version: 12.0 or later.
+  Memory: At least 2 GB.
+
+- Kubernetes Cluster:
+
+  Version: Use the latest stable version of Kubernetes for compatibility and security.
+  Nodepool Configuration:
+  Minimum of 2 nodes for high availability.
+  Each node should have at least 8 vCPUs and 16 GB of memory.
+  A minimum of 100 GB free disk space per node.
+  Supported Environments:
+  Self-hosted Kubernetes clusters.
+  Managed Kubernetes services like Azure Kubernetes Service (AKS), Amazon Elastic Kubernetes Service (EKS), or Google Kubernetes Engine (GKE).
     
 ### Prerequisites
 
