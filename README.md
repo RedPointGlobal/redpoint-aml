@@ -26,7 +26,6 @@ Below, is a detailed diagram illustrating the deployment architecture. This visu
   - Disk Space: Minimum of 100 GB free space.
   - Disk Type: SSDs recommended for optimal I/O performance.
   - Supported Environments:
-    - Azure Cosmos DB.
     - MongoDB on Linux.
     - MongoDB Atlas.
 
