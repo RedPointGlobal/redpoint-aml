@@ -77,7 +77,7 @@ In the ```values.yaml``` file, under the global application settings, specify th
 
 - Create Kubernetes Namespace:
 
-Run the following command to create a Kubernetes namespace where the RPI services will be deployed:
+Run the following command to create a Kubernetes namespace where the Mercury services will be deployed:
 ```
 kubectl create namespace redpoint-mercury
 ```
@@ -94,7 +94,7 @@ kubectl create secret docker-registry docker-io \
 ```
 - Create TLS Certificate Secret:
 
-If you are using SSL for RPI access endpoints, create a Kubernetes secret containing your TLS certificate's private and public keys. Replace path/to/tls.cert and path/to/tls.key with the actual paths to your certificate files:
+If you are using SSL for Mercury access endpoints, create a Kubernetes secret containing your TLS certificate's private and public keys. Replace path/to/tls.cert and path/to/tls.key with the actual paths to your certificate files:
 ```
 kubectl create secret tls tls-secret \
 --namespace ingress-tls \
@@ -103,7 +103,7 @@ kubectl create secret tls tls-secret \
 ```
 After completing the above steps, proceed with the installation:
 
-- Clone the RPI repository to your local machine:
+- Clone the Mercury repository to your local machine:
 ```
 git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
@@ -111,7 +111,7 @@ git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
 cd redpoint-mercury
 ```
-- Execute the following Helm command to install RPI on your Kubernetes cluster, using the configurations set in your ```values.yaml``` file:
+- Execute the following Helm command to install Mercury on your Kubernetes cluster, using the configurations set in your ```values.yaml``` file:
 ```
 helm install redpoint-mercury redpoint-mercury/ --values values.yaml
 
@@ -150,7 +150,7 @@ With the DNS configuration in place, you're ready to access the Mercury interfac
 https://redpointmercury.example.com              # Web UI and User login
 https://redpointmercury.example.com/auth/        # Keycloak Web UI
 https://redpointmercury.example.com/admin/       # Activation and Admin Setup page
-https://redpointmercury.example.com/docs/        # Swagger Authentication and RPI Services API docs
+https://redpointmercury.example.com/docs/        # Swagger Authentication and Mercury Services API docs
 https://redpointmercury.example.com/docs-ml/     # Swagger AML API docs
 ````
 ### Mercury Activation
