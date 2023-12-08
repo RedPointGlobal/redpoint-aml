@@ -12,7 +12,9 @@ spec:
   selector:
     app: dbapi
 
+
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -89,3 +91,91 @@ spec:
       - name: init-cache
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      nodeSelector:
+        pool: rpengshared
+      tolerations:
+        - effect: NoSchedule
+          key: pool
+          operator: Equal
+          value: rpengshared
+{{- end }}
+
+
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: dbapi
+  name: dbapi
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: dbapi
+  replicas: {{  .Values.global.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: dbapi
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: dbapi
+        image: redpointglobal/ml_servicesapi:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: dbapi
+          containerPort: 8910
+        env:
+          - name: CACHE_CHANNEL
+            value: cache_updates
+          - name: CACHE_NAME
+            value: cache
+          - name: CACHE_PORT
+            value: "6379"
+          - name: _JAVA_OPTIONS
+            value: -Xmx750m
+          - name: MONGODB_ML_DB
+            value: mongo-conn-string
+          - name: MONGODB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-conn-string
+                key: MONGODB_NAME
+          - name: MONGODB_TYPE
+            value: MONGO
+          - name: AUTH_ENABLED
+            value: "false"
+          - name: PREDICT_ENABLED
+            value: "false"
+          - name: RABBITMQ_ENABLED
+            value: "false"
+          - name: REST_HTTPS_PORT
+            value: "8913"
+          - name: HTTPS_PROXY_HOST
+            value: ""
+          - name: REST_HTTP_PORT
+            value: "8910"
+          - name: REST_NAME
+            value: 0.0.0.0
+          - name: TRAINING_ENABLED
+            value: "false"
+          - name: IS_DBAPI
+            value: "true"
+        livenessProbe:
+          httpGet:
+            path: /api-ml/v3/healthcheck
+            port: 8910
+          periodSeconds: 20
+          timeoutSeconds: 60
+          failureThreshold: 3
+        resources: {}
+      restartPolicy: Always
+      initContainers:
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+{{- end }}

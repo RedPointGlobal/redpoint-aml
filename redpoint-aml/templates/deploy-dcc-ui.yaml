@@ -20,13 +20,14 @@ metadata:
     nginx.org/websocket-services: "dcc-socketio"
 spec:
   ports:
-  - port: 8080 #8980
+  - port: 8080 
     protocol: TCP
   selector:
     role: dcc-ui
     app: mercury
     
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,7 +75,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /index.html
-            port: 8080 #8980
+            port: 8080
           periodSeconds: 20
           timeoutSeconds: 15
           failureThreshold: 3
@@ -82,3 +83,63 @@ spec:
       - name: init-dcc-servicesapi
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup dcc-servicesapi; do echo waiting for dcc-servicesapi; sleep 2; done;']
+{{- end }}
+
+
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: dcc-ui
+    app: mercury
+  name: dcc-ui
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: dcc-ui
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
+  template:
+    metadata:
+      labels:
+        role: dcc-ui
+        app: mercury
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      restartPolicy: Always
+      serviceAccountName: dcc-ui
+      containers:
+      - name: dcc-ui
+        image: redpointglobal/dcc_ui:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: dcc-ui
+          containerPort: 8080 
+        env:
+        - name: DCC_API_NAME
+          value: dcc-servicesapi
+        - name: DCC_API_PORT
+          value: "8900"
+        - name: DCC_API_PROTO
+          value: http
+        - name: ML_API_NAME
+          value: ml-servicesapi
+        - name: ML_API_PORT
+          value: "8910"
+        - name: ML_API_PROTO
+          value: http
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: 8080
+          periodSeconds: 20
+          timeoutSeconds: 15
+          failureThreshold: 3
+      initContainers:
+      - name: init-dcc-servicesapi
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup dcc-servicesapi; do echo waiting for dcc-servicesapi; sleep 2; done;']
+{{- end }}

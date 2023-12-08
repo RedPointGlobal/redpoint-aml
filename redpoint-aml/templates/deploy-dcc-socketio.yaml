@@ -17,6 +17,7 @@ spec:
     role: dcc-socketio
 
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -52,3 +53,42 @@ spec:
           value: "8930"
         resources: {}
       restartPolicy: Always
+{{- end }}
+
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: dcc-socketio
+    app: mercury
+  name: dcc-socketio
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: dcc-socketio
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
+  template:
+    metadata:
+      labels:
+        role: dcc-socketio
+        app: mercury
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: dcc-socketio
+        image: redpointglobal/dcc_socketio:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8930
+        env: 
+        - name: SOCKETIO_HOST
+          value: "0.0.0.0"
+        - name: SOCKETIO_PORT
+          value: "8930"
+        resources: {}
+      restartPolicy: Always
+{{- end }}

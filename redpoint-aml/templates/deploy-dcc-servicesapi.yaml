@@ -13,6 +13,7 @@ spec:
     role: dcc-servicesapi
     
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -122,4 +123,116 @@ spec:
       - name: init-cache
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
-       
+{{- end }}    
+
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: dcc-servicesapi
+    app: mercury
+  name: dcc-servicesapi
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: dcc-servicesapi
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
+  template:
+    metadata:
+      labels:
+        role: dcc-servicesapi
+        app: mercury
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: dcc-servicesapi
+        image: redpointglobal/dcc_servicesapi:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: dcc-servicesapi
+          containerPort: 8900
+        env:
+        - name: CACHE_CHANNEL
+          value: cache_updates
+        - name: CACHE_NAME
+          value: cache
+        - name: CACHE_PORT
+          value: "6379"
+        - name: _JAVA_OPTIONS
+          value: -Xmx750m
+        - name: MONGODB_DCC_DB
+          value: mongo-conn-string
+        - name: MONGODB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-conn-string
+              key: MONGODB_NAME
+        - name: MONGODB_TYPE
+          value: MONGO    
+        - name: REST_HTTPS_PORT
+          value: "8903"
+        - name: REST_HTTP_PORT
+          value: "8900"
+        - name: REST_NAME
+          value: 0.0.0.0
+        - name: RPI_ENABLED
+          value: {{ .Values.envs.RPI_ENABLED | quote }}
+        - name: RPI_READ_TIMEOUT
+          value: "300000"
+        - name: RPI_NAME
+          value: {{ .Values.envs.RPI_NAME }}
+        - name: RPI_SHARED_PASS
+          valueFrom:
+            secretKeyRef:
+              name: rpi-shared-pwd
+              key: RPI_SHARED_PASS
+        - name: RPI_PORT
+          value: "443"
+        - name: RPI_CACHES_ENABLED
+          value: {{ .Values.envs.RPI_CACHES_ENABLED | quote }}
+        - name: SMTP_HOST
+          value: {{ .Values.envs.SMTP_HOST }}
+        - name: SMTP_PORT
+          value: {{ .Values.envs.SMTP_PORT | quote }}
+        - name: SMTP_PROTO
+          value: SMTP_TLS
+        - name: SMTP_USER
+          value: {{ .Values.envs.SMTP_USER }}
+        - name: SMTP_PASS
+          value: {{ .Values.envs.SMTP_PASS }}
+        - name: SITE_URL
+          value: {{ .Values.envs.SITE_URL | quote }}
+        - name: RABBITMQ_ENABLED
+          value: "true"
+        - name: RABBITMQ_NAME
+          value: "messageq"
+        - name: RABBITMQ_ML_Q
+          value: "dcc_init_queue"
+        - name: KEYCLOAK_HOST
+          value: keycloak
+        - name: SSO_ENABLED
+          value: {{ .Values.envs.SSO_ENABLED | quote }}
+        - name: KEYCLOAK_USER
+          value: {{ .Values.databases.keycloak.keycloak_user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          value: {{ .Values.databases.keycloak.db_password }}
+        livenessProbe:
+          httpGet:
+            path: /api/v1/healthcheck
+            port: 8900
+          periodSeconds: 20
+          timeoutSeconds: 15
+          failureThreshold: 3
+        resources: {}
+      initContainers:
+      - name: init-messageq
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup messageq; do echo waiting for messageq; sleep 2; done;']
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+{{- end }} 

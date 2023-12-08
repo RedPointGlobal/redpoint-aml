@@ -14,6 +14,7 @@ spec:
     role: ml-servicesapi
 
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -123,3 +124,116 @@ spec:
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
       restartPolicy: Always
+{{- end }}
+
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: ml-servicesapi
+    app: mercury
+  name: ml-servicesapi
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: ml-servicesapi
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
+  template:
+    metadata:
+      labels:
+        role: ml-servicesapi
+        app: mercury
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: ml-servicesapi
+        image: redpointglobal/ml_servicesapi:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: ml-servicesapi
+          containerPort: 8910
+        env:
+        - name: CACHE_CHANNEL
+          value: cache_updates
+        - name: CACHE_NAME
+          value: cache
+        - name: CACHE_PORT
+          value: "6379"
+        - name: _JAVA_OPTIONS
+          value: -Xmx750m
+        - name: MONGODB_ML_DB
+          value: mongo-conn-string
+        - name: MONGODB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-conn-string
+              key: MONGODB_NAME
+        - name: MONGODB_TYPE
+          value: MONGO 
+        - name: PREDICT_ENABLED
+          value: "true"
+        - name: PREDICT_NAME
+          value: predictor
+        - name: PREDICT_PORT
+          value: "11000"
+        - name: RABBITMQ_ENABLED
+          value: "true"
+        - name: RABBITMQ_ML_Q
+          value: training_tasks
+        - name: RABBITMQ_NAME
+          value: messageq
+        - name: REST_HTTPS_PORT
+          value: "8913"
+        - name: REST_HTTP_PORT
+          value: "8910"
+        - name: REST_NAME
+          value: 0.0.0.0
+        - name: TRAINING_ENABLED
+          value: "true"
+        - name: TRAINING_NAME
+          value: trainer
+        - name: TRAINING_PORT
+          value: "11001"
+        - name: IS_DBAPI
+          value: "false"
+        - name: RPDM_ENABLED            # Enable RPDM for data connections
+          value: "false"
+        - name: RPDM_HOST               # Hostname or IP for RPDM server
+          value: ""
+        - name: RPDM_USER               # Username for RPDM server
+          value: ""
+        - name: RPDM_TEMP_DIR           # Temporary directory on RPDM server
+          value: ""
+        - name: RPDM_ML_URI             # URI for ML-ServicesAPI accessible by RPDM server
+          value: ""
+        - name: DATASET_CSV_STORAGE     # Dataset storage type [ADL2|GCS|S3]
+          value: ""
+        - name: DATASET_CSV_DIR         # Directory for storing datasets
+          value: ""
+        - name: ADL2_ACCOUNT_NAME       # Account name for Azure Data Lake 2
+          value: ""
+        - name: S3_ACCESS_KEY           # Access key for Amazon S3 Buckets
+          value: ""
+        - name: GCS_PROJECT_ID          # Project id for Google Cloud Storage
+          value: ""
+        - name: KEYCLOAK_HOST
+          value: keycloak
+        - name: SSO_ENABLED
+          value: {{ .Values.envs.SSO_ENABLED | quote }}
+        - name: KEYCLOAK_USER
+          value: {{ .Values.databases.keycloak.keycloak_user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          value: {{ .Values.databases.keycloak.db_password }}
+      initContainers:
+      - name: init-messageq
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup messageq; do echo waiting for messageq; sleep 2; done;']
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      restartPolicy: Always
+{{- end }}

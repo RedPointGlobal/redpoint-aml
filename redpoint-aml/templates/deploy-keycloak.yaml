@@ -19,6 +19,7 @@ spec:
     role: keycloak
 
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -70,3 +71,58 @@ spec:
         - name: PROXY_ADDRESS_FORWARDING
           value: "true"
       restartPolicy: Always
+{{- end }}
+
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: keycloak
+    app: mercury
+  name: keycloak
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: keycloak
+      app: mercury
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: keycloak
+        app: mercury
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: keycloak
+        image: redpointglobal/keycloak:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: http 
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        env: 
+        - name: KEYCLOAK_PRODUCTION
+          value: "false"
+        - name: KEYCLOAK_ADMIN_USER
+          value: "sso-admin@noemail.com"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: {{ .Values.databases.keycloak.db_password }}
+        - name: KEYCLOAK_DATABASE_PASSWORD
+          value: {{ .Values.databases.keycloak.db_password }}
+        - name: KEYCLOAK_DATABASE_HOST
+          value: {{ .Values.databases.keycloak.db_address | quote }}
+        - name: KEYCLOAK_DATABASE_NAME
+          value: {{ .Values.databases.keycloak.db_name | quote }}
+        - name: KEYCLOAK_DATABASE_PORT
+          value: "5432"
+        - name: KEYCLOAK_DATABASE_USER
+          value: {{ .Values.databases.keycloak.db_user }}
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+      restartPolicy: Always
+{{- end }}

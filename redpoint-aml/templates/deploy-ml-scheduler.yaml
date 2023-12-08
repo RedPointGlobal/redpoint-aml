@@ -14,6 +14,7 @@ spec:
     role: ml-scheduler
 
 ---
+{{- if eq .Values.global.deploymentType "internal" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -107,3 +108,101 @@ spec:
         image: busybox:1.28
         command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
       restartPolicy: Always
+{{- end }}
+
+---
+{{- if eq .Values.global.deploymentType "client" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    role: ml-scheduler
+    app: mercury
+  name: ml-scheduler
+  namespace: {{ .Values.global.namespace }}
+spec:
+  selector:
+    matchLabels:
+      role: ml-scheduler
+      app: mercury
+  replicas: {{  .Values.global.replicaCount }}
+  template:
+    metadata:
+      labels:
+        role: ml-scheduler
+        app: mercury
+    spec:
+      imagePullSecrets:
+      - name: docker-io
+      containers:
+      - name: ml-scheduler
+        image: redpointglobal/ml_scheduler:{{ .Values.global.image_tag }}
+        imagePullPolicy: Always
+        ports:
+        - name: ml-scheduler
+          containerPort: 8920
+        env:
+        - name: CACHE_NAME
+          value: cache
+        - name: CACHE_PORT
+          value: "6379"
+        - name: _JAVA_OPTIONS
+          value: -Xmx750m
+        - name: MONGODB_ML_DB
+          value: mongo-conn-string
+        - name: MONGODB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-conn-string
+              key: MONGODB_NAME
+        - name: MONGODB_TYPE
+          value: MONGO 
+        - name: RABBITMQ_ML_Q
+          value: training_tasks
+        - name: RABBITMQ_NAME
+          value: messageq
+        - name: RPDM_ENABLED            # Enable RPDM for data connections
+          value: "false"
+        - name: RPDM_HOST               # Hostname or IP for RPDM server
+          value: ""
+        - name: RPDM_USER               # Username for RPDM server
+          value: ""
+        - name: RPDM_TEMP_DIR           # Temporary directory on RPDM server
+          value: ""
+        - name: RPDM_ML_URI             # URI for ML-ServicesAPI accessible by RPDM server
+          value: ""
+        - name: DATASET_CSV_STORAGE     # Dataset storage type [ADL2|GCS|S3]
+          value: ""
+        - name: DATASET_CSV_DIR         # Directory for storing datasets
+          value: ""
+        - name: ADL2_ACCOUNT_NAME       # Account name for Azure Data Lake 2
+          value: ""
+        - name: S3_ACCESS_KEY           # Access key for Amazon S3 Buckets
+          value: ""
+        - name: GCS_PROJECT_ID          # Project id for Google Cloud Storage
+          value: ""
+        - name: KEYCLOAK_HOST
+          value: keycloak
+        - name: SSO_ENABLED
+          value: {{ .Values.envs.SSO_ENABLED | quote }}
+        - name: KEYCLOAK_USER
+          value: {{ .Values.databases.keycloak.keycloak_user | quote }}
+        - name: KEYCLOAK_PASSWORD
+          value: {{ .Values.databases.keycloak.db_password }}
+        livenessProbe:
+          httpGet:
+            path: /api-ml/v2/healthcheck
+            port: 8920
+          periodSeconds: 20
+          timeoutSeconds: 15
+          failureThreshold: 3
+        resources: {}
+      initContainers:
+      - name: init-messageq
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup messageq; do echo waiting for messageq; sleep 2; done;']
+      - name: init-cache
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nslookup cache; do echo waiting for cache; sleep 2; done;']
+      restartPolicy: Always
+{{- end }}
