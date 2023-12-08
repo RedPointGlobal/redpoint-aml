@@ -132,10 +132,8 @@ It may take some time for all the Mercury services to fully initialize. We recom
 To view the Mercury endpoints, use the following kubectl command. This command lists all the ingress resources in the redpoint-mercury namespace, showing you the configured endpoints.
 ```
 kubectl get ingress --namespace redpoint-mercury
-
 ```
 Initially, you might not see an IP address for your endpoints. This delay is normal and occurs because it takes some time for the ingress load balancer to be provisioned. If no IP address is displayed, wait a few minutes and then re-run the command. Once the load balancer is ready, you should see output similar to the following, where <Load Balancer IP> will be replaced with the actual IP address:
-
 ```
 dcc-admin-api-ingress     redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
 dcc-api-ml-docs-ingress   redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
