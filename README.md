@@ -60,7 +60,7 @@ Before installing Mercury, follow these preparatory steps to ensure a smooth set
 
 - Configure Database Settings:
 
-Ensure you have correctly configured the MongoDB and PostgreSQL Server details in the databases section of the values.yaml file. This includes setting the correct server address, username, password, database names, and other relevant settings.
+Ensure you have correctly configured the MongoDB and PostgreSQL Server details in the databases section of the ```values.yaml``` file. This includes setting the correct server address, username, password, database names, and other relevant settings.
 ```
   databases:
     mongodb:
@@ -69,7 +69,7 @@ Ensure you have correctly configured the MongoDB and PostgreSQL Server details i
 
 - Select Cloud Provider:
 
-In the values.yaml file, under the global application settings, specify the cloud provider where your infrastructure is hosted. Supported providers include Azure, AWS, and GCP. This setting ensures that Mercury aligns with your cloud infrastructure.
+In the ```values.yaml``` file, under the global application settings, specify the cloud provider where your infrastructure is hosted. Supported providers include Azure, AWS, and GCP. This setting ensures that Mercury aligns with your cloud infrastructure.
 ```
   cloudProvider: azure
   deploymentType: client
@@ -111,9 +111,9 @@ git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
 cd redpoint-mercury
 ```
-- Execute the following Helm command to install RPI on your Kubernetes cluster, using the configurations set in your values.yaml file:
+- Execute the following Helm command to install RPI on your Kubernetes cluster, using the configurations set in your ```values.yaml``` file:
 ```
-helm install redpoint-mercury redpoint-mercury/ --values values.yaml
+helm install redpoint-mercury redpoint-mercury/ --values ```values.yaml```
 
 ```
 If everything goes well, You should see the output below.
