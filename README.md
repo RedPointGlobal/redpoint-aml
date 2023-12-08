@@ -56,61 +56,72 @@ Before installing Mercury, ensure that the following requirements are met:
 | This guide is primarily tailored for deployments on Microsoft Azure. However, Mercury is also compatible with Amazon Web Services (AWS) and Google Cloud Platform (GCP). Ensure you select the appropriate cloud provider in the values.yaml file before proceeding with the installation. This setting can be found in the global section of values.yaml.|
 
 ### Install Procedure
-The default installation creates kubernetes deployments for MongoDB and PostgreSQL. This is fine for a DEMO environment. However, for production workloads, you must disable these and instead provide connection strings for your production servers as shown in ```STEP 4```
+Before installing Mercury, follow these preparatory steps to ensure a smooth setup:
 
-1. Clone the redpoint Mercury repository
+- Configure Database Settings:
+
+Ensure you have correctly configured the MongoDB and PostgreSQL Server details in the databases section of the values.yaml file. This includes setting the correct server address, username, password, database names, and other relevant settings.
+```
+  databases:
+    mongodb:
+    keycloak:
+```
+
+- Select Cloud Provider:
+
+In the values.yaml file, under the global application settings, specify the cloud provider where your infrastructure is hosted. Supported providers include Azure, AWS, and GCP. This setting ensures that Mercury aligns with your cloud infrastructure.
+```
+  cloudProvider: azure
+  deploymentType: client
+```
+
+- Create Kubernetes Namespace:
+
+Run the following command to create a Kubernetes namespace where the RPI services will be deployed:
+```
+kubectl create namespace redpoint-mercury
+```
+
+- Create Docker Registry Secret:
+
+Create a Kubernetes secret containing the image pull credentials for the Redpoint container registry. These credentials are provided by Redpoint Support. Replace <your_username> and <your_password> with your actual credentials:
+```
+kubectl create secret docker-registry docker-io \
+--namespace redpoint-mercury \
+--docker-server=rg1acrpub.azurecr.io \
+--docker-username=<your_username> \
+--docker-password=<your_password>
+```
+- Create TLS Certificate Secret:
+
+If you are using SSL for RPI access endpoints, create a Kubernetes secret containing your TLS certificate's private and public keys. Replace path/to/tls.cert and path/to/tls.key with the actual paths to your certificate files:
+```
+kubectl create secret tls tls-secret \
+--namespace redpoint-mercury \
+--cert=path/to/tls.cert \
+--key=path/to/tls.key
+```
+After completing the above steps, proceed with the installation:
+
+- Clone the RPI repository to your local machine:
 ```
 git clone https://github.com/RedPointGlobal/redpoint-aml.git
 ```
-2. Connect to your Kubernetes cluster and create a namespace for Mercury
+- Change into the cloned repository's directory:
 ```
-kubectl create namespace redpoint-aml
+cd redpoint-mercury
 ```
-3. Create a kubernetes secret that contains your docker hub credentials.
+- Execute the following Helm command to install RPI on your Kubernetes cluster, using the configurations set in your values.yaml file:
 ```
-kubectl create secret docker-registry docker-io --docker-server='https://index.docker.io/v1/' \
---docker-username=$your_docker_username --docker-password=$your_docker_password \
---namespace redpoint-aml
-```
-4. Edit the ```values.yaml``` file and provide connection strings for your MongoDB and PostgreSQL servers as shown below
-```
-mongodb:
-  connection_string: # <your mongodb connection string>
+helm install redpoint-mercury redpoint-mercury/ --values values.yaml
 
-keycloak:
-  postgresql:
-    db_address: postgresql          # Your Postgresql server address
-    db_user: keycloak               # Your Postgresql server admin user
-    db_password: 7rU8w9o8ocTa8Zp1   # Your Postgresql server admin password
 ```
-Then disable the default MongoDB and PostgreSQL deployments as shown below
-```
-mongodb:
-  enabled: false
-
-keycloak:
-  postgresql:
-    enabled: false
-```
-5. Edit the ```values.yaml``` file and set your target cloud platform as shown below
-```
-global:
-  cloudProvider: azure # or google or amazon   
-```
-6. Make sure you are inside the ```redpoint-aml``` directory 
-```
-cd redpoint-aml
-```
-7. Run the following command to install Mercury
-```
-helm install redpoint-aml redpoint-aml/ --values values.yaml --create-namespace
- ```
 If everything goes well, You should see the output below.
 ```
-Release "redpoint-aml" has been installled. Happy Helming!
-NAME: redpoint-aml
+Release "redpoint-mercury" has been installled. Happy Helming!
+NAME: redpoint-mercury
 LAST DEPLOYED: Fri Apr 21 17:36:41 2023
-NAMESPACE: redpoint-aml
+NAMESPACE: redpoint-mercury
 STATUS: deployed
 REVISION: 2
 TEST SUITE: None
@@ -120,7 +131,7 @@ It takes a few minutes for the all the Mercury services to start. Please wait ab
 ### Mercury Ingress
 8. The default installation creates an nginx ingress controller to expose the Mercury Web UI endpoints. To terminate TLS, provide a TLS certificate for your custom domain by creating the kubernetes secret containing your certificate data
 ```
-kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-aml
+kubectl create secret tls ingress-tls --cert=$your_tls_cert --key=$your_tls_key --namespace redpoint-mercury
 ```
 If you prefer to use a different Ingress solution, you can disable the default ingress creation in the ```values.yaml``` file as shown below
 ```
@@ -131,26 +142,26 @@ nginx:
 ### Mercury Endpoints
 Run the command below to retrieve the Mercury endpoints. 
 ```
-kubectl get ingress --namespace redpoint-aml
+kubectl get ingress --namespace redpoint-mercury
 ```
 If you dont see an IP address, it because it takes a couple minutes for the ingress load balancer to be created. Wait a few minutes and run the command once more and you should eventually see an IP address returned as shown in the example below
 
 ```
-dcc-admin-api-ingress     nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
-dcc-api-ml-docs-ingress   nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
-dcc-apis-ingress          nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
-dcc-docs-ingress          nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
-dcc-ui-ingress            nginx-redpoint-aml   redpoint-aml.example.com   < Load Balancer IP>   80, 443   32d
+dcc-admin-api-ingress     nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
+dcc-api-ml-docs-ingress   nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
+dcc-apis-ingress          nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
+dcc-docs-ingress          nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
+dcc-ui-ingress            nginx-redpoint-mercury   redpoint-mercury.example.com   < Load Balancer IP>   80, 443   32d
 ```
 Next you need to create the corresponding DNS record in your DNS zone 
 
 At this point, the default installation is complete. You can now access the Mercury User login and Swagger endpoints as described below
 ```
-https://redpoint-aml.example.com              # Web UI and User login
-https://redpoint-aml.example.com/auth/        # Keycloak Web UI
-https://redpoint-aml.example.com/admin/       # Activation and Admin Setup page
-https://redpoint-aml.example.com/docs/        # Swagger Authentication and RPI Services API docs
-https://redpoint-aml.example.com/docs-ml/     # Swagger Mercury API docs
+https://redpoint-mercury.example.com              # Web UI and User login
+https://redpoint-mercury.example.com/auth/        # Keycloak Web UI
+https://redpoint-mercury.example.com/admin/       # Activation and Admin Setup page
+https://redpoint-mercury.example.com/docs/        # Swagger Authentication and RPI Services API docs
+https://redpoint-mercury.example.com/docs-ml/     # Swagger Mercury API docs
 ```
 ### Mercury Activation
 Once you obtain your activation key from Redpoint Support, access the Mercury admin UI and enter the license.
