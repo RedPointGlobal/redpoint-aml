@@ -54,6 +54,10 @@ spec:
           value: -Xmx750m
         - name: MONGODB_DCC_DB
           value: mongo-conn-string
+        - name: DEFAULT_DCC_ADMIN_USER
+          value: {{ .Values.envs.DEFAULT_DCC_ADMIN_USER | quote }}
+        - name: DEFAULT_DCC_ADMIN_PASS
+          value: {{ .Values.envs.DEFAULT_DCC_ADMIN_PASS | quote }}
         - name: MONGODB_NAME
           valueFrom:
             secretKeyRef:

@@ -126,10 +126,9 @@ STATUS: deployed
 REVISION: 2
 TEST SUITE: None
 ```
-It takes a few minutes for the all the Mercury services to start. Please wait about 5-10 minutes before proceeding to retrieve the ingress endpoints in the next step.
+It may take some time for all the Mercury services to fully initialize. We recommend waiting approximately 5-10 minutes to ensure that the services are completely up and running. This patience is crucial for the successful retrieval of ingress endpoints in the subsequent step.
 
 ### Mercury Endpoints
-- Retrieving Endpoints:
 To view the Mercury endpoints, use the following kubectl command. This command lists all the ingress resources in the redpoint-mercury namespace, showing you the configured endpoints.
 ```
 kubectl get ingress --namespace redpoint-mercury
@@ -146,11 +145,18 @@ dcc-ui-ingress            redpointmercury.example.com   <Load Balancer IP>   80,
 
 ```
 ### Mercury Activation
-Once you obtain your activation key from Redpoint Support, access the Mercury admin UI and enter the license.
+After receiving your activation key from Redpoint Support, you can activate your Mercury instance. Follow these steps to access the Mercury admin UI and enter your license key:
+
+- Navigate to the Mercury admin UI using your web browser. This interface is where you will enter the provided activation key.
+
+- Use the default login credentials to access the admin panel:
 ```
-Default username: admin@noemail.com
-Default password: .RedPoint123
+Username: admin@noemail.com
+Password: .RedPoint123
 ```
+- Once logged in, locate the section for license activation and enter the activation key you received from Redpoint Support.
+
+Note: It's highly recommended to change the default password after your initial login for enhanced security. Follow the on-screen instructions or consult the user guide for steps on updating your credentials.
 ![image](https://user-images.githubusercontent.com/42842390/218563945-94a5b162-dc59-45ae-900e-130a84810f66.png)
 
 ### RPI Integration

@@ -61,6 +61,8 @@ databases:
 
 
 envs:
+  DEFAULT_DCC_ADMIN_USER: admin@redpointmercury.com
+  DEFAULT_DCC_ADMIN_PASS: .RedPoint123
   # Enable or disable the RPI service.
   # Set to 'true' to enable or 'false' to disable.
   RPI_ENABLED: false 
