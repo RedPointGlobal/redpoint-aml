@@ -143,6 +143,18 @@ dcc-apis-ingress          redpointmercury.example.com   <Load Balancer IP>   80,
 dcc-docs-ingress          redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
 dcc-ui-ingress            redpointmercury.example.com   <Load Balancer IP>   80, 443   32d
 ```
+After completing the default installation, the next crucial step involves setting up your DNS:
+
+Add a DNS record in your DNS zone. This record should point to the IP address of the load balancer provided by your Kubernetes ingress. This setup ensures that the domain names you use (like redpointmercury.example.com) correctly route to your AML instance.
+
+With the DNS configuration in place, you're ready to access the Mercury interfaces:
+```
+https://redpointmercury.example.com              # Web UI and User login
+https://redpointmercury.example.com/auth/        # Keycloak Web UI
+https://redpointmercury.example.com/admin/       # Activation and Admin Setup page
+https://redpointmercury.example.com/docs/        # Swagger Authentication and RPI Services API docs
+https://redpointmercury.example.com/docs-ml/     # Swagger AML API docs
+````
 ### Mercury Activation
 After receiving your activation key from Redpoint Support, you can activate your Mercury instance. Follow these steps to access the Mercury admin UI and enter your license key:
 
