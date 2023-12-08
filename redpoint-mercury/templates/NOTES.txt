@@ -1,6 +1,6 @@
 ********************************* SUCCESS! ************************************************************
 
-1. Mercury has successfully been installed in your cluster.
+1. Redpoint Mercury has successfully been installed in your cluster.
   - It may take a few minutes for the all the Mercury services to start. Please wait about 10 minutes.
 
 2. To retrieve the Mercury URL endpoints, execute the command below. This command will keep checking the ingress IP address every 10 seconds until it finds one. Once an IP address is found, it will display the IP and ingress endpoints.
