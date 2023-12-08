@@ -186,9 +186,14 @@ envs:
 ```
 
 ### Mercury Documentation
-For detailed Mercury documentation and release notes, please visit the official Mercury documentation website at the address below
+To explore in-depth documentation and stay updated with the latest release notes for Mercury, visit our official documentation portal. This resource offers a wealth of information to help you maximize the potential of Mercury in your environment
 
-https://mercury-docs.redpointcloud.com
+ [Mercury Documentation](https://mercury-docs.redpointcloud.com)
 
 ### Support 
-Contact support@redpointglobal.com for any application specific issues you may encounter. Note that Kubernetes specific or other network connectivity errors are out of scope.
+If you encounter any challenges specific to the Mercury application, our dedicated support team is here to assist you. Please reach out to us with details of the issue for prompt and expert help.
+
+[support@redpointglobal.com](support@redpointglobal.com)
+
+```Note on Scope of Support```
+While we are fully equipped to address issues directly related to the Mercury application, please be aware that challenges pertaining to Kubernetes configurations, network connectivity, or other external system issues fall outside our support scope. For these, we recommend consulting with your IT infrastructure team or seeking assistance from relevant technical forums.
