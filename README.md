@@ -1,4 +1,4 @@
-![rg1_SMALL](https://github.com/RedPointGlobal/redpoint-aml/assets/42842390/12f47916-ad62-406f-8da3-d34e7e3a3a4b)
+![rp_cdp_logo](https://github.com/RedPointGlobal/redpoint-aml/assets/42842390/8d8851d0-a7fd-4285-81ff-1d1d77f62fb6)
 ## Redpoint Automated Machine Learning (Mercury) - Deployment on Kubernetes
 Redpoint Automated Machine Learning (Mercury) revolutionizes the way you apply machine learning to your data. It's designed to simplify and streamline the process, making advanced machine learning accessible even if you don't have extensive data science expertise.
 
